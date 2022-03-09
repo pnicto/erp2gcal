@@ -18,9 +18,17 @@ class Course:
         self.end = end
         self.room = room
 
+    def day(self):
+        days = []
+        dayDict = {'Mo': 'Monday',
+                   'Tu': 'Tuesday', 'We': "Wednesday",
+                   'Th': 'Thursday', 'Fr': 'Friday',
+                   'Sa': 'Saturday'}
 
-def dayParse(self):
-    pass
+        for i in range(0, len(self.days), 2):
+            days.append(dayDict[self.days[i:i+2]])
+        return days
+
 
 # BITS F112-L1
 # LEC (1838)
@@ -48,7 +56,7 @@ def coursesGen(courses_info):
     for i in range(0, len(courses_info), 4):
 
         courses.append(Course(
-            courses_info[i], courses_info[i+1].split()[0], courses_info[i+3].split()[1]))
+            courses_info[i], courses_info[i+1].split()[0], courses_info[i+3].split()[1], courses_info[i+2].split()[0]))
 
     return courses
 
@@ -56,9 +64,8 @@ def coursesGen(courses_info):
 def main():
     filecont = fileParse('text.txt')
     courses = coursesGen(filecont)
-
-    for i in range(0, len(courses)):
-        print(courses[i].typ)
+    # print(dayParse(filecont))
+    print(courses[0].day())
 
 
 main()
