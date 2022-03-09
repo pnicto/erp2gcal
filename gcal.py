@@ -11,21 +11,20 @@ from datetime import timedelta as td
 
 
 def auth():
-    SCOPES = ['https://www.googleapis.com/auth/calendar']
+    SCOPES = ["https://www.googleapis.com/auth/calendar"]
     creds = None
-    if os.path.exists('token.json'):
-        creds = Credentials.from_authorized_user_file('token.json', SCOPES)
+    if os.path.exists("token.json"):
+        creds = Credentials.from_authorized_user_file("token.json", SCOPES)
         # If there are no (valid) credentials available, let the user log in.
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            flow = InstalledAppFlow.from_client_secrets_file(
-                'credentials.json', SCOPES)
+            flow = InstalledAppFlow.from_client_secrets_file("credentials.json", SCOPES)
             creds = flow.run_local_server(port=0)
-        with open('token.json', 'w') as token:
+        with open("token.json", "w") as token:
             token.write(creds.to_json())
-    return build('calendar', 'v3', credentials=creds)
+    return build("calendar", "v3", credentials=creds)
 
 
 service = auth()
@@ -37,17 +36,14 @@ colors = service.colors().get().execute()
 
 
 event_body = {
-    'summary': courses[1].name,  # Title
-    'description': courses[0].room,  # Room
-    'start': {
-        'dateTime': dt(2022, 3, 9, 16).isoformat(),
-        'timeZone': 'Asia/Kolkata'
+    "summary": courses[1].name,  # Title
+    "description": courses[0].room,  # Room
+    "start": {"dateTime": dt(2022, 3, 9, 16).isoformat(), "timeZone": "Asia/Kolkata"},
+    "end": {
+        "dateTime": (dt(2022, 3, 9, 16) + td(hours=1)).isoformat(),
+        "timeZone": "Asia/Kolkata",
     },
-    'end': {
-        'dateTime': (dt(2022, 3, 9, 16)+td(hours=1)).isoformat(),
-        'timeZone': 'Asia/Kolkata'
-    },
-    'colorId': 5,
+    "colorId": 5,
     # 'recurrence': []
 }
 
@@ -79,5 +75,5 @@ event_body = {
 #     },
 # }
 
-response = service.events().insert(calendarId='primary', body=event_body).execute()
-print(response)
+# response = service.events().insert(calendarId='primary', body=event_body).execute()
+print(Erp2gcal.timeGen(courses[0].start))
