@@ -6,7 +6,8 @@ from googleapiclient.errors import HttpError
 
 import os.path
 import Erp2gcal
-from datetime import datetime
+from datetime import datetime as dt
+from datetime import timedelta as td
 
 
 def auth():
@@ -36,13 +37,15 @@ colors = service.colors().get().execute()
 
 
 event_body = {
-    'summary': courses[0].name,  # Title
+    'summary': courses[1].name,  # Title
     'description': courses[0].room,  # Room
     'start': {
-        'dateTime': ''
+        'dateTime': dt(2022, 3, 9, 16).isoformat(),
+        'timeZone': 'Asia/Kolkata'
     },
     'end': {
-        'dateTime': ''
+        'dateTime': (dt(2022, 3, 9, 16)+td(hours=1)).isoformat(),
+        'timeZone': 'Asia/Kolkata'
     },
     'colorId': 5,
     # 'recurrence': []

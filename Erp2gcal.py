@@ -1,6 +1,5 @@
 import datetime as dt
 
-# dt.datetime()
 def fileParse(text):
     contents = []
     sentences_to_miss = ["This Week's Schedule",
