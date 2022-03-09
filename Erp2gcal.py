@@ -1,3 +1,6 @@
+import datetime as dt
+
+# dt.datetime()
 def fileParse(text):
     contents = []
     sentences_to_miss = ["This Week's Schedule",
@@ -10,12 +13,12 @@ def fileParse(text):
 
 
 class Course:
-    def __init__(self, name, typ, room, days=[], start=None, end=None, ):
+    def __init__(self, name, typ, room, days=[], start=None):
         self.name = name
         self.typ = typ
         self.days = days
         self.start = start
-        self.end = end
+        self.end = None
         self.room = room
 
     def day(self):
@@ -29,26 +32,10 @@ class Course:
             days.append(dayDict[self.days[i:i+2]])
         return days
 
-
-# BITS F112-L1
-# LEC (1838)
-# MoWe 11:00AM - 11:50AM
-# Room  TBA
-
-# if i % 4 == 0:  # Course Name
-#             # dayTime.append(content[i].split()[0])
-#             # print(content[i])
-#             pass
-#         elif i % 4 == 1:  # Type
-#             # print(content[i])
-#             pass
-#         elif i % 4 == 2:  # Day and Time
-#             # print(content[i])
-#             pass
-#         elif i % 4 == 3:  # Room
-#             # print(content[i])
-#             pass
-#         i += 4
+    def timings(self):
+        tdelta = {'TUT': dt.timedelta(hours=1), 'LAB': dt.timedelta(
+            hours=2), 'TUT': dt.timedelta(hours=1)}
+        pass
 
 
 def coursesGen(courses_info):
@@ -64,8 +51,9 @@ def coursesGen(courses_info):
 def main():
     filecont = fileParse('text.txt')
     courses = coursesGen(filecont)
-    # print(dayParse(filecont))
-    print(courses[0].day())
+    print(courses[2].typ
+          )
+    return courses
 
 
 main()
