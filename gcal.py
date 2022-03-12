@@ -6,9 +6,9 @@ from googleapiclient.errors import HttpError
 
 import os.path
 import Erp2gcal
+from random import randint
 from datetime import datetime as dt
 from datetime import timedelta as td
-import pytz
 
 
 def auth():
@@ -30,55 +30,23 @@ def auth():
 
 service = auth()
 courses = Erp2gcal.main()
-colors = service.colors().get().execute()
-# val = service.calendarList().get(calendarId='primary').execute()
-
-# print(val['summary'])
+# colors = service.colors().get().execute()
 
 
-event_body = {
-    "summary": courses[0].name,  # Title
-    "description": courses[0].room,  # Room
-    "start": {"dateTime": dt(2022, 3, 12, 16).isoformat(), "timeZone": "Asia/Kolkata"},
-    "end": {
-        "dateTime": (dt(2022, 3, 12, 16) + td(hours=1)).isoformat(),
-        "timeZone": "Asia/Kolkata",
-    },
-    "colorId": 5,
-    "recurrence": [
-        f"RRULE:FREQ=WEEKLY;UNTIL=20220328T160000Z;BYDAY={','.join(courses[0].day())}"
-    ],  # UNTIL= , BYDAY="SU" / "MO" / "TU" / "WE" / "TH" / "FR" / "SA"
-}
+for course in courses:
+    event_body = {
+        "summary": course.name,  # Title
+        "description": course.room,  # Room
+        "start": {"dateTime": course.start, "timeZone": "Asia/Kolkata"},
+        "end": {
+            "dateTime": course.end,
+            "timeZone": "Asia/Kolkata",
+        },
+        "colorId": randint(1, 11),
+        "recurrence": [
+            f"RRULE:FREQ=WEEKLY;UNTIL=20220328T000000Z;BYDAY={','.join(course.day())}"
+        ],  # UNTIL= , BYDAY="SU" / "MO" / "TU" / "WE" / "TH" / "FR" / "SA"
+    }
 
-# event = {
-#     'summary': 'Google I/O 2015',
-#     'location': '800 Howard St., San Francisco, CA 94103',
-#     'description': 'A chance to hear more about Google\'s developer products.',
-#     'start': {
-#         'dateTime': '2015-05-28T09:00:00-07:00',
-#         'timeZone': 'America/Los_Angeles',
-#     },
-#     'end': {
-#         'dateTime': '2015-05-28T17:00:00-07:00',
-#         'timeZone': 'America/Los_Angeles',
-#     },
-#     'recurrence': [
-#         'RRULE:FREQ=DAILY;COUNT=2'
-#     ],
-#     'attendees': [
-#         {'email': 'lpage@example.com'},
-#         {'email': 'sbrin@example.com'},
-#     ],
-#     'reminders': {
-#         'useDefault': False,
-#         'overrides': [
-#             {'method': 'email', 'minutes': 24 * 60},
-#             {'method': 'popup', 'minutes': 10},
-#         ],
-#     },
-# }
-
-response = service.events().insert(calendarId="primary", body=event_body).execute()
-# print(dt(2022, 3, 12, 16, tzinfo=pytz.timezone("Asia/Kolkata")).isoformat())
-# print(f"RRULE:FREQ=WEEKLY;UNTIL=20220328T160000;BYDAY={','.join(courses[0].day())}")
-print(response)
+    response = service.events().insert(calendarId="primary", body=event_body).execute()
+    print(response)
