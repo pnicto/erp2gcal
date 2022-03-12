@@ -13,7 +13,7 @@ Script to help add classes in google calendar from erp.
    pip install requirements.txt
    ```
 6. Go to ERP -> Student Center and copy the text as shown. ![](https://media.discordapp.net/attachments/786594878418583562/952232294544986172/unknown.png)
-7. Paste it in `courses.txt` file.
+7. Paste it in `courses.txt` file. (create a new file with that name)
 8. ```py
     python erp2gcal.py
    ```
