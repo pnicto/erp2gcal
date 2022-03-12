@@ -88,7 +88,7 @@ def timeGen(inpt, typ):
 
 
 def main():
-    filecont = fileParse("text.txt")
+    filecont = fileParse("courses.txt")
     courses = coursesGen(filecont)
     return courses
 

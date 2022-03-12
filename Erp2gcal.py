@@ -5,7 +5,7 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
 import os.path
-import Erp2gcal
+import courseParse
 from random import randint
 from datetime import datetime as dt
 from datetime import timedelta as td
@@ -29,7 +29,7 @@ def auth():
 
 
 service = auth()
-courses = Erp2gcal.main()
+courses = courseParse.main()
 # colors = service.colors().get().execute()
 
 
