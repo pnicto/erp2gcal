@@ -1,96 +1,52 @@
-import datetime as dt
+from google.auth.transport.requests import Request
+from google.oauth2.credentials import Credentials
+from google_auth_oauthlib.flow import InstalledAppFlow
+from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
+
+import os.path
+import Erp2gcal
+from random import randint
+from datetime import datetime as dt
+from datetime import timedelta as td
 
 
-def fileParse(text):
-    contents = []
-    sentences_to_miss = [
-        "This Week's Schedule",
-        "    Class   Schedule",
-        "Academic Calendar Deadlines",
-        "",
-    ]
-    with open(text, "r") as f:
-        for item in f.read().split("\n"):
-            if item not in sentences_to_miss:
-                contents.append(item)
-    return contents
+def auth():
+    SCOPES = ["https://www.googleapis.com/auth/calendar"]
+    creds = None
+    if os.path.exists("token.json"):
+        creds = Credentials.from_authorized_user_file("token.json", SCOPES)
+        # If there are no (valid) credentials available, let the user log in.
+    if not creds or not creds.valid:
+        if creds and creds.expired and creds.refresh_token:
+            creds.refresh(Request())
+        else:
+            flow = InstalledAppFlow.from_client_secrets_file("credentials.json", SCOPES)
+            creds = flow.run_local_server(port=0)
+        with open("token.json", "w") as token:
+            token.write(creds.to_json())
+    return build("calendar", "v3", credentials=creds)
 
 
-class Course:
-    def __init__(self, name, typ, room, days, start, end):
-        self.name = name
-        self.typ = typ
-        self.days = days
-        self.start = start
-        self.room = room
-        self.end = end
-
-    def day(self):
-        days = []
-        # dayDict = {
-        #     "Mo": "Monday",
-        #     "Tu": "Tuesday",
-        #     "We": "Wednesday",
-        #     "Th": "Thursday",
-        #     "Fr": "Friday",
-        #     "Sa": "Saturday",
-        # }
-
-        for i in range(0, len(self.days), 2):
-            # days.append(dayDict[self.days[i : i + 2]])
-            days.append(self.days[i : i + 2].upper())
-        return days
+service = auth()
+courses = Erp2gcal.main()
+# colors = service.colors().get().execute()
 
 
-def coursesGen(courses_info):
-    courses = []
-
-    for i in range(0, len(courses_info), 4):
-        start, end = timeGen(
-            courses_info[i + 2].split()[1], courses_info[i + 1].split()[0]
-        )
-        courses.append(
-            Course(
-                courses_info[i],
-                courses_info[i + 1].split()[0],
-                courses_info[i + 3].split()[1],
-                courses_info[i + 2].split()[0],
-                start,
-                end,
-            )
-        )
-
-    return courses
-
-
-def timeGen(inpt, typ):
-    hour = int(float(inpt.split(":")[0]))  # ['2', '00PM']
-    meridian = inpt.split(":")[1][2:]  #'00PM' -> PM
-    tdelta = {
-        "TUT": dt.timedelta(hours=1),
-        "LAB": dt.timedelta(hours=2),
-        "TUT": dt.timedelta(hours=1),
-        "LEC": dt.timedelta(hours=1),
+for course in courses:
+    event_body = {
+        "summary": course.name,  # Title
+        "description": course.room,  # Room
+        "start": {"dateTime": course.start, "timeZone": "Asia/Kolkata"},
+        "end": {
+            "dateTime": course.end,
+            "timeZone": "Asia/Kolkata",
+        },
+        "colorId": randint(1, 11),
+        "recurrence": [
+            f"RRULE:FREQ=WEEKLY;UNTIL=20220328T000000Z;BYDAY={','.join(course.day())}"
+        ],  # UNTIL= , BYDAY="SU" / "MO" / "TU" / "WE" / "TH" / "FR" / "SA"
     }
-    if "PM" in meridian and hour < 12:
-        hour += 12
-    start = dt.datetime(
-        dt.datetime.now().year, dt.datetime.now().month, dt.datetime.now().day, hour
-    ).isoformat()
 
-    end = (
-        dt.datetime(
-            dt.datetime.now().year, dt.datetime.now().month, dt.datetime.now().day, hour
-        )
-        + tdelta[typ]
-    ).isoformat()
-    return start, end
-
-
-def main():
-    filecont = fileParse("text.txt")
-    courses = coursesGen(filecont)
-    return courses
-
-
-main()
+    response = service.events().insert(calendarId="primary", body=event_body).execute()
+    print(response)
