@@ -37,7 +37,8 @@ class Course:
         }
 
         for i in range(0, len(self.days), 2):
-            days.append(dayDict[self.days[i : i + 2]])
+            # days.append(dayDict[self.days[i : i + 2]])
+            days.append(self.days[i : i + 2].upper())
         return days
 
     def timings(self):

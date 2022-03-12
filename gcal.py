@@ -8,6 +8,7 @@ import os.path
 import Erp2gcal
 from datetime import datetime as dt
 from datetime import timedelta as td
+import pytz
 
 
 def auth():
@@ -36,15 +37,17 @@ colors = service.colors().get().execute()
 
 
 event_body = {
-    "summary": courses[1].name,  # Title
+    "summary": courses[0].name,  # Title
     "description": courses[0].room,  # Room
-    "start": {"dateTime": dt(2022, 3, 9, 16).isoformat(), "timeZone": "Asia/Kolkata"},
+    "start": {"dateTime": dt(2022, 3, 12, 16).isoformat(), "timeZone": "Asia/Kolkata"},
     "end": {
-        "dateTime": (dt(2022, 3, 9, 16) + td(hours=1)).isoformat(),
+        "dateTime": (dt(2022, 3, 12, 16) + td(hours=1)).isoformat(),
         "timeZone": "Asia/Kolkata",
     },
     "colorId": 5,
-    # 'recurrence': []
+    "recurrence": [
+        f"RRULE:FREQ=WEEKLY;UNTIL=20220328T160000Z;BYDAY={','.join(courses[0].day())}"
+    ],  # UNTIL= , BYDAY="SU" / "MO" / "TU" / "WE" / "TH" / "FR" / "SA"
 }
 
 # event = {
@@ -75,5 +78,7 @@ event_body = {
 #     },
 # }
 
-# response = service.events().insert(calendarId='primary', body=event_body).execute()
-print(Erp2gcal.timeGen(courses[0].start))
+response = service.events().insert(calendarId="primary", body=event_body).execute()
+# print(dt(2022, 3, 12, 16, tzinfo=pytz.timezone("Asia/Kolkata")).isoformat())
+# print(f"RRULE:FREQ=WEEKLY;UNTIL=20220328T160000;BYDAY={','.join(courses[0].day())}")
+print(response)
