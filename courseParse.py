@@ -6,7 +6,7 @@ def fileParse(text):
     sentences_to_miss = [
         "This Week's Schedule",
         "    Class   Schedule",
-        # " \tClass\tSchedule",
+        " \tClass\tSchedule",
         "Academic Calendar Deadlines",
         "",
     ]
