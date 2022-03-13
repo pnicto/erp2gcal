@@ -30,8 +30,14 @@ def auth():
 
 service = auth()
 courses = courseParse.main()
-# colors = service.colors().get().execute()
 
+# colors = service.colors().get().execute()
+# print colors to know the colorIds
+until = input(
+    "Till when the events should be added? (Enter date in YYYY/MM/DD format)\n"
+)
+
+until = "".join(until.split("/")) + "T000000Z"
 
 for course in courses:
     event_body = {
@@ -44,7 +50,7 @@ for course in courses:
         },
         "colorId": randint(1, 11),
         "recurrence": [
-            f"RRULE:FREQ=WEEKLY;UNTIL=20220328T000000Z;BYDAY={','.join(course.day())}"
+            f"RRULE:FREQ=WEEKLY;UNTIL={until};BYDAY={','.join(course.day())}"
         ],  # UNTIL= , BYDAY="SU" / "MO" / "TU" / "WE" / "TH" / "FR" / "SA"
     }
 
