@@ -9,6 +9,7 @@ import courseParse
 from random import randint
 from datetime import datetime as dt
 from datetime import timedelta as td
+from pprint import pprint
 
 
 def auth():
@@ -29,30 +30,39 @@ def auth():
 
 
 service = auth()
-courses = courseParse.main()
 
-# colors = service.colors().get().execute()
 # print colors to know the colorIds
+# colors = service.colors().get().execute()
+
 until = input(
-    "Till when the events should be added? (Enter date in YYYY/MM/DD format)\n"
+    "\nTill when the events should be added? (Enter date in YYYY/MM/DD format)\n"
 )
 
 until = "".join(until.split("/")) + "T000000Z"
+courses = courseParse.main()
 
-for course in courses:
-    event_body = {
-        "summary": course.name,  # Title
-        "description": course.room,  # Room
-        "start": {"dateTime": course.start, "timeZone": "Asia/Kolkata"},
-        "end": {
-            "dateTime": course.end,
-            "timeZone": "Asia/Kolkata",
-        },
-        "colorId": randint(1, 11),
-        "recurrence": [
-            f"RRULE:FREQ=WEEKLY;UNTIL={until};BYDAY={','.join(course.day())}"
-        ],  # UNTIL= , BYDAY="SU" / "MO" / "TU" / "WE" / "TH" / "FR" / "SA"
-    }
+try:
+    for course in courses:
+        event_body = {
+            "summary": course.name,  # Title
+            "description": course.room,  # Room
+            "start": {"dateTime": course.start, "timeZone": "Asia/Kolkata"},
+            "end": {
+                "dateTime": course.end,
+                "timeZone": "Asia/Kolkata",
+            },
+            "colorId": randint(1, 11),
+            "recurrence": [
+                f"RRULE:FREQ=WEEKLY;UNTIL={until};BYDAY={','.join(course.day())}"
+            ],  # UNTIL= , BYDAY="SU" / "MO" / "TU" / "WE" / "TH" / "FR" / "SA"
+        }
 
-    response = service.events().insert(calendarId="primary", body=event_body).execute()
-    print(response)
+        response = (
+            service.events().insert(calendarId="primary", body=event_body).execute()
+        )
+        print(response)
+except AttributeError:
+    pprint(courses)
+    print(
+        "Look for unusual items like 'Class \\tSchedule' in the above list and them in line 6 of courseParse.py"
+    )

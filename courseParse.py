@@ -1,5 +1,4 @@
 import datetime as dt
-from pprint import pprint
 
 
 def fileParse(text):
@@ -7,7 +6,7 @@ def fileParse(text):
     sentences_to_miss = [
         "This Week's Schedule",
         "    Class   Schedule",
-        " \tClass\tSchedule",
+        # " \tClass\tSchedule",
         "Academic Calendar Deadlines",
         "",
     ]
@@ -87,10 +86,7 @@ def main():
         courses = coursesGen(filecont)
         return courses
     except ValueError:
-        pprint(filecont)
-        print(
-            "\nLook for items like ' Class \\tSchedule' or similar and add them in line 7 of courseParse.py"
-        )
+        return filecont
 
 
 main()
