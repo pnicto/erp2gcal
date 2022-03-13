@@ -7,7 +7,7 @@ Script to help add classes in google calendar from erp.
 1. [Download](https://github.com/pnicto/erp2gcal/archive/refs/heads/master.zip) the repo.
 2. [Visit](https://console.cloud.google.com/) in the side bar choose APIs & Services -> Library Search for google calendar and enable it
 3. Now go to APIs & Services -> Credentials, Create a project and then Create Credentials -> Oauth client ID -> Desktop app as application type after creating download it as json.
-4. Rename the downloaded file as `Credentials.json` and place it along with the downloaded files from step 1.
+4. Rename the downloaded file as `credentials.json` and place it along with the downloaded files from step 1.
 5. Run
    ```
    pip install -r requirements.txt
