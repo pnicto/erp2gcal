@@ -23,4 +23,4 @@ The day you run the script the calendar will be filled with all classes.
 
 # Troubleshooting
 
-Common problem might be the `Class schedule` line in `courses.txt` you can fix that by changing line 6 in `courseParse.py`
+Common problem might be the `Class schedule` line in `courses.txt` you can fix that by changing line 7 in `courseParse.py`
