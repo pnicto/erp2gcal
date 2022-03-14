@@ -1,6 +1,6 @@
 # erp2gcal
 
-Script to help add classes in google calendar from erp.
+Script to help add classes in google calendar from erp (with minimal effort from user side).
 
 ## Usage
 
@@ -24,4 +24,6 @@ The day you run the script the calendar will be filled with all classes.
 
 # Troubleshooting
 
-Common problem might be the `Class schedule` line in `courses.txt` you can fix that by changing line 7 in `courseParse.py`
+1. Common problem might be the `Class schedule` line in `courses.txt` you can fix that by changing line 7 in `courseParse.py`
+2. Problem: `Authorization Error Error 403: Access_denied` 
+   Solution: [Visit](https://console.cloud.google.com/), goto APIs & Services -> OAuth consent screen, select the app you created in step 3 of `Usage` and add your email under `Test Users`. 
