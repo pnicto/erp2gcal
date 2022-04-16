@@ -20,8 +20,9 @@ Script to help add classes in google calendar from erp (with minimal effort from
    ```
 # Known Issues
 
-The day you run the script the calendar will be filled with all classes.
-
+1. The day you run the script the calendar will be filled with all classes.
+2. Workshop Practical is counted as a regular lab class and takes 2 hours instead of 3
+   
 # Troubleshooting
 
 1. Common problem might be the `Class schedule` line in `courses.txt` you can fix that by changing line 7 in `courseParse.py`
