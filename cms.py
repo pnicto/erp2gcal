@@ -6,6 +6,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+import requests
+
 driver = webdriver.Edge(service=EdgeService(
     EdgeChromiumDriverManager().install()))
 
@@ -45,3 +47,39 @@ cookie = {
 }
 
 driver.quit()
+
+# Unenrollment
+def unenrollment(securityKey, userId, sessionKey, cookie):
+    enrolledCourses = requests.get(
+        f"https://cms.bits-hyderabad.ac.in/webservice/rest/server.php?wsfunction=core_enrol_get_users_courses&moodlewsrestformat=json&wstoken={securityKey}&userid={userId}"
+    ).json()
+
+    print(f"Enrolling from {len(enrolledCourses)} courses\n")
+
+    for course in enrolledCourses:
+        print(f"Unenrolling from {course['shortname']}...")
+        enrolInstance = requests.get(
+            f"https://cms.bits-hyderabad.ac.in/webservice/rest/server.php?wsfunction=core_enrol_get_course_enrolment_methods&moodlewsrestformat=json&wstoken={securityKey}&courseid={course['id']}").json()
+
+        enrolId = enrolInstance[0]['id']
+
+        res = requests.get(
+            f"https://cms.bits-hyderabad.ac.in/enrol/self/unenrolself.php?confirm=1&enrolid={enrolId}&sesskey={sessionKey}", cookies=cookie)
+
+    print("Done unenrolling!\n")
+
+# Giving option to perform action
+print("""
+      1. Unenrol from all previous courses and Enrol in new courses
+      2. Enrol
+      3. Unenrol
+      """)
+
+choice = int(input('Enter 1 or 2:\n'))
+
+if choice == 1:
+  unenrollment(securityKey, userId, sessionKey, cookie)
+elif choice == 2:
+    print('enrol')
+else:
+  print('unenrol')
