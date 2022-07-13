@@ -1,20 +1,14 @@
 from math import ceil
 
 import requests
-# Selenium imports
-from selenium import webdriver
+# # Selenium imports
 from selenium.webdriver.common.by import By
-from selenium.webdriver.edge.service import Service as EdgeService
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-from webdriver_manager.microsoft import EdgeChromiumDriverManager
 
-driver = webdriver.Edge(service=EdgeService(EdgeChromiumDriverManager().install()))
-
-driver = webdriver.Edge()
 
 # Function which goes to login page
-def perform_login():
+def perform_login(driver):
     try:
         # Go to CMS
         driver.get('https://cms.bits-hyderabad.ac.in/login/index.php')
@@ -29,7 +23,7 @@ def perform_login():
 
 
 # Function which returns security key, session key, user id to make requests
-def get_required_parameters_to_make_requests():
+def get_required_parameters_to_make_requests(driver):
     try:
     # Preferences page to get security key and session key
         driver.get('https://cms.bits-hyderabad.ac.in/user/preferences.php')
@@ -69,11 +63,6 @@ def unenrol_from_all_courses(security_key,user_id,session_key,cookie):
             # Make unenrol request
             requests.get(
                 f"https://cms.bits-hyderabad.ac.in/enrol/self/unenrolself.php?confirm=1&enrolid={enrolId}&sesskey={session_key}", cookies=cookie)
-
-        if len(enrolled_courses) == 0:
-            print("\nDone unenrolling!!!\n")
-        else:
-            print(enrolled_courses)
     except Exception as err:
         print(err)
 
