@@ -1,30 +1,37 @@
 # erp2gcal
 
-Script to help add classes in google calendar from erp (with minimal effort from user side).
+## Features
+
+* Enroll/unenroll batch from cms.
+* Create google calendar events with ease.
 
 ## Usage
 
 1. [Download](https://github.com/pnicto/erp2gcal/archive/refs/heads/master.zip) the repo.
-2. [Visit](https://console.cloud.google.com/) in the side bar choose APIs & Services -> Library Search for google calendar and enable it
-3. Now go to APIs & Services -> Credentials, Create a project and then Create Credentials -> Oauth client ID -> Desktop app as application type after creating download it as json.
-4. Rename the downloaded file as `credentials.json` and place it along with the downloaded files from step 1.
-5. Run
+2. [Visit](https://developers.google.com/calendar/api/quickstart/python) and follow the prerequisites or read more below.
+   <details>
+   <summary>Click to read more</summary>
+
+   1. <a href="https://console.cloud.google.com/">Visit</a> in the side bar choose APIs & Services -> Library Search for google calendar and enable it.
+   2. Now go to APIs & Services -> Credentials, Create a project and then Create Credentials -> Oauth client ID -> Desktop app as application type after creating download it as json.
+   </details>
+3. Rename the downloaded file as `credentials.json` and place it along with the downloaded files from step 1.
+4. Run
    ```
    pip install -r requirements.txt
    ```
-6. Go to ERP -> Student Center and copy the text as shown. ![](https://media.discordapp.net/attachments/786594878418583562/952232294544986172/unknown.png)
-7. Paste it in `courses.txt` file. (create a new file with that name)
-8. Run
+5. Run
    ```py
-    python erp2gcal.py
-   ```
-# Known Issues
+    python main.py
+    ```
+6. Choose the options shown on terminal and login when propmpted.
+
+## Known Issues
 
 1. The day you run the script the calendar will be filled with all classes.
-2. Workshop Practical is counted as a regular lab class and takes 2 hours instead of 3
-   
-# Troubleshooting
+2. Workshop Practical is counted as a regular lab class and takes 2 hours instead of 3.
 
-1. Common problem might be the `Class schedule` line in `courses.txt` you can fix that by changing line 7 in `courseParse.py`
-2. Problem: `Authorization Error Error 403: Access_denied` 
-   Solution: [Visit](https://console.cloud.google.com/), goto APIs & Services -> OAuth consent screen, select the app you created in step 3 of `Usage` and add your email under `Test Users`. 
+## Troubleshooting
+
+1. Problem: `Authorization Error Error 403: Access_denied`
+   Solution: [Visit](https://console.cloud.google.com/), goto APIs & Services -> OAuth consent screen, select the app you created in step 3 of `Usage` and add your email under `Test Users`.
