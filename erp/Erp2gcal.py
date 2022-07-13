@@ -1,15 +1,17 @@
+import os.path
+from datetime import datetime as dt
+from datetime import timedelta as td
+from pprint import pprint
+from random import randint
+
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
-import os.path
-import courseParse
-from random import randint
-from datetime import datetime as dt
-from datetime import timedelta as td
-from pprint import pprint
+import erp.courseParse as courseParse
+from erp import rawTableData
 
 
 def auth():
@@ -39,7 +41,7 @@ until = input(
 )
 
 until = "".join(until.split("/")) + "T000000Z"
-courses = courseParse.main()
+courses = courseParse.main(rawTableData)
 
 try:
     for course in courses:

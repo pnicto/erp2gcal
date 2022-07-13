@@ -6,8 +6,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
 
-from enrol import enrollment
-from unenrol import unenrol
+from cms.enrol import enrollment
+from cms.unenrol import unenrol
 
 driver = webdriver.Edge(service=EdgeService(EdgeChromiumDriverManager().install()))
 

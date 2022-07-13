@@ -18,5 +18,5 @@ WebDriverWait(driver, 50).until(
 
 schedule = driver.execute_script("return document.querySelector('.PSLEVEL1GRIDWBO')")
 
-tableData = schedule.text
+rawTableData = schedule.text
 

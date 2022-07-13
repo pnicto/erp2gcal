@@ -1,22 +1,6 @@
 import datetime as dt
 
 
-def fileParse(text):
-    contents = []
-    sentences_to_miss = [
-        "This Week's Schedule",
-        "    Class   Schedule",
-        " \tClass\tSchedule",
-        "Academic Calendar Deadlines",
-        "",
-    ]
-    with open(text, "r") as f:
-        for item in f.read().split("\n"):
-            if item not in sentences_to_miss:
-                contents.append(item)
-    return contents
-
-
 class Course:
     def __init__(self, name, typ, room, days, start, end):
         self.name = name
@@ -80,13 +64,11 @@ def timeGen(inpt, typ):
     return start, end
 
 
-def main():
+def main(rawTableData):
     try:
-        filecont = fileParse("courses.txt")
-        courses = coursesGen(filecont)
+        tableData = rawTableData.split("\n")[2:]
+        courses = coursesGen(tableData)
         return courses
     except ValueError:
-        return filecont
+        return tableData
 
-
-main()
