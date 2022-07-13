@@ -10,37 +10,36 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
-import courseParse
-
 
 def google_auth():
-    SCOPES = ["https://www.googleapis.com/auth/calendar"]
-    creds = None
-    if os.path.exists("token.json"):
-        creds = Credentials.from_authorized_user_file("token.json", SCOPES)
-        # If there are no (valid) credentials available, let the user log in.
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file("credentials.json", SCOPES)
-            creds = flow.run_local_server(port=0)
-        with open("token.json", "w") as token:
-            token.write(creds.to_json())
-    return build("calendar", "v3", credentials=creds)
+    try:
+        SCOPES = ["https://www.googleapis.com/auth/calendar"]
+        creds = None
+        if os.path.exists("token.json"):
+            creds = Credentials.from_authorized_user_file("token.json", SCOPES)
+            # If there are no (valid) credentials available, let the user log in.
+        if not creds or not creds.valid:
+            if creds and creds.expired and creds.refresh_token:
+                creds.refresh(Request())
+            else:
+                flow = InstalledAppFlow.from_client_secrets_file("credentials.json", SCOPES)
+                creds = flow.run_local_server(port=0)
+            with open("token.json", "w") as token:
+                token.write(creds.to_json())
+        return build("calendar", "v3", credentials=creds)
+    except Exception as err:
+        print(err)
 
 
-service = google_auth()
 
 # print colors to know the colorIds
 # colors = service.colors().get().execute()
-def make_gcal_events():
+def create_gcal_events(courses,service):
     until = input(
         "\nTill when the events should be added? (Enter date in YYYY/MM/DD format)\n"
     )
 
     until = "".join(until.split("/")) + "T000000Z"
-    courses = courseParse.main()
 
     try:
         for course in courses:
