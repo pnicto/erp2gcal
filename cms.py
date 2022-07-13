@@ -67,6 +67,7 @@ def unenrol_from_all_courses(security_key,user_id,session_key,cookie):
         print(err)
 
 # Function which enrolls you in *all* registered courses on ERP
+# Many thanks to PyRet#4288 for the code below.
 def enrol_all_registered_courses(security_key,
 cookie,erp_registered_courses, number_of_search_results=5,filter_by_category=-1):
     try:
