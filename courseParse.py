@@ -66,12 +66,3 @@ def timeGen(inpt, typ):
     ).isoformat()
     return start, end
 
-
-# def main(rawTableData):
-#     try:
-#         tableData = rawTableData.split("\n")[2:]
-#         courses = coursesGen(tableData)
-#         return courses
-#     except ValueError:
-#         return tableData
-
