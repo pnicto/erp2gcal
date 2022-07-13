@@ -1,6 +1,8 @@
 import datetime as dt
 
+# Do not try to understand :D
 
+# Course class
 class Course:
     def __init__(self, name, typ, room, days, start, end):
         self.name = name
@@ -17,28 +19,29 @@ class Course:
             days.append(self.days[i : i + 2].upper())
         return days
 
-
-def coursesGen(courses_info):
+# Function which takes the list format courses and creates "Course" class instance for them
+def coursesGen(erp_registered_courses):
     courses = []
-    for i in range(0, len(courses_info), 4):
+    for i in range(0, len(erp_registered_courses), 4):
         # Assign starting and ending time of a course to start,end in RFC3399 format using timeGen function
         start, end = timeGen(
-            courses_info[i + 2].split()[1], courses_info[i + 1].split()[0]
+            erp_registered_courses[i + 2].split()[1], erp_registered_courses[i + 1].split()[0]
         )
         # Course (name,typ,room,days,start,end)
         courses.append(
             Course(
-                courses_info[i],
-                courses_info[i + 1].split()[0],
-                courses_info[i + 3].split()[1],
-                courses_info[i + 2].split()[0],
+                erp_registered_courses[i],
+                erp_registered_courses[i + 1].split()[0],
+                erp_registered_courses[i + 3].split()[1],
+                erp_registered_courses[i + 2].split()[0],
                 start,
                 end,
             )
         )
     return courses
 
-
+# Function which creates corresponsing time intervals depending on the type of course
+# TODO: Workshop Lab is 3hrs but this still takes it as 2 hours
 def timeGen(inpt, typ):
     hour = int(float(inpt.split(":")[0]))  # ['2', '00PM']
     meridian = inpt.split(":")[1][2:]  #'00PM' -> PM
@@ -64,11 +67,11 @@ def timeGen(inpt, typ):
     return start, end
 
 
-def main(rawTableData):
-    try:
-        tableData = rawTableData.split("\n")[2:]
-        courses = coursesGen(tableData)
-        return courses
-    except ValueError:
-        return tableData
+# def main(rawTableData):
+#     try:
+#         tableData = rawTableData.split("\n")[2:]
+#         courses = coursesGen(tableData)
+#         return courses
+#     except ValueError:
+#         return tableData
 
