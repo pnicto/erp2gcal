@@ -69,16 +69,17 @@ def unenrol_from_all_courses(security_key,user_id,session_key,cookie):
 # Function which enrolls you in *all* registered courses on ERP
 # Many thanks to PyRet#4288 for the code below.
 def enrol_all_registered_courses(security_key,
-cookie,erp_registered_courses, number_of_search_results=5,filter_by_category=-1):
+cookie,courses, number_of_search_results=5,filter_by_category=-1):
     try:
-        print(f"Trying to enroll into {len(erp_registered_courses)} courses")
-        for course in erp_registered_courses:
+        print(f"Trying to enroll into {len(courses)} courses")
+        for course in courses:
             print(f"Searching for {course.name} in courses...")
+            course_search_term =" ".join( course.name.split("-"))
             searchRes = requests.get(
-                f"https://cms.bits-hyderabad.ac.in/webservice/rest/server.php?wsfunction=core_course_search_courses&moodlewsrestformat=json&wstoken={security_key}&criterianame=search&criteriavalue={course.name}&perpage={number_of_search_results}&page=0", cookies=cookie).json()
+                f"https://cms.bits-hyderabad.ac.in/webservice/rest/server.php?wsfunction=core_course_search_courses&moodlewsrestformat=json&wstoken={security_key}&criterianame=search&criteriavalue={course_search_term}&perpage={number_of_search_results}&page=0", cookies=cookie).json()
             totalPages = ceil(searchRes['total'] / number_of_search_results)
             if totalPages == 0:
-                print(f"No results found for '{course.name}'. Press enter to continue")
+                print(f"No results found for '{course_search_term}'. Press enter to continue")
                 input()
                 continue
             keepLoading = True
@@ -109,14 +110,14 @@ cookie,erp_registered_courses, number_of_search_results=5,filter_by_category=-1)
                         continue
                     pageNum += 1
                     searchRes = requests.get(
-                        f"https://cms.bits-hyderabad.ac.in/webservice/rest/server.php?wsfunction=core_course_search_courses&moodlewsrestformat=json&wstoken={security_key}&criterianame=search&criteriavalue={course.name}&perpage={number_of_search_results}&page={pageNum}", cookies=cookie).json()
+                        f"https://cms.bits-hyderabad.ac.in/webservice/rest/server.php?wsfunction=core_course_search_courses&moodlewsrestformat=json&wstoken={security_key}&criterianame=search&criteriavalue={course_search_term}&perpage={number_of_search_results}&page={pageNum}", cookies=cookie).json()
                 elif choice == "p":
                     if (pageNum - 1) < 0:
                         print("You are on the first page.")
                         continue
                     pageNum -= 1
                     searchRes = requests.get(
-                        f"https://cms.bits-hyderabad.ac.in/webservice/rest/server.php?wsfunction=core_course_search_courses&moodlewsrestformat=json&wstoken={security_key}&criterianame=search&criteriavalue={course.name}&perpage={number_of_search_results}&page={pageNum}", cookies=cookie).json()
+                        f"https://cms.bits-hyderabad.ac.in/webservice/rest/server.php?wsfunction=core_course_search_courses&moodlewsrestformat=json&wstoken={security_key}&criterianame=search&criteriavalue={course_search_term}&perpage={number_of_search_results}&page={pageNum}", cookies=cookie).json()
                 else:
                     try:
                         choice = int(choice)
