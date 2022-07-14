@@ -1,6 +1,4 @@
 import os.path
-from datetime import datetime as dt
-from datetime import timedelta as td
 from pprint import pprint
 from random import randint
 
@@ -38,6 +36,10 @@ def create_gcal_events(courses,service):
     until = input(
         "\nTill when the events should be added? (Enter date in YYYY/MM/DD format)\n"
     )
+    print("=>")
+    print(courses)
+    print("=>")
+    print(courses[0].name)
 
     until = "".join(until.split("/")) + "T000000Z"
 
@@ -61,8 +63,5 @@ def create_gcal_events(courses,service):
                 service.events().insert(calendarId="primary", body=event_body).execute()
             )
             print(response)
-    except AttributeError:
-        pprint(courses)
-        print(
-            "Look for unusual items like 'Class \\tSchedule' in the above list and them in line 6 of courseParse.py"
-        )
+    except Exception as err:
+        print(err)
