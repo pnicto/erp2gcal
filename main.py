@@ -104,6 +104,8 @@ if __name__ == "__main__":
                 courses=courses,
                 service=gcal_service,
             )
+            # Remove the side effect
+            erp2gcal.clean_the_unnecessary_events(service=gcal_service)
         except Exception as err:
             print(f"{bcolors.FAIL}{err}{bcolors.ENDC}")
 
@@ -201,5 +203,7 @@ if __name__ == "__main__":
                 courses=courses,
                 service=gcal_service,
             )
+            # Remove the side effect
+            erp2gcal.clean_the_unnecessary_events(service=gcal_service)
         except Exception as err:
             print(f"{bcolors.FAIL}{err}{bcolors.ENDC}")

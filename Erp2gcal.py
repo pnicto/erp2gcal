@@ -1,6 +1,6 @@
 import os.path
 from random import randint
-
+import datetime as dt
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -68,6 +68,26 @@ def create_gcal_events(courses,service):
             response = (
                 service.events().insert(calendarId="primary", body=event_body).execute()
             )
+            # print(response)
+    except Exception as err:
+        print(f"{bcolors.FAIL}{err}{bcolors.ENDC}")
+
+# Function for known issue #1
+# clean the events created as a side effect
+def clean_the_unnecessary_events(service):
+    # today in the format asked in docs :p
+    try:
+        today = dt.datetime(dt.datetime.now().year, dt.datetime.now().month, dt.datetime.now().day,tzinfo=dt.timezone.utc).isoformat()
+        # Gets all events for scheduled on today
+        events_list = service.events().list(calendarId='primary',singleEvents=True,orderBy='startTime',timeMin= today).execute()
+        events = events_list.get('items', [])
+        # Filter events with description "Created using erp2gcal"
+        events_to_remove = filter(lambda x: x['description'] == 'Created using erp2gcal',events)
+        # Make delete request
+        for event in events_to_remove:
+            response = (
+                    service.events().delete(calendarId="primary", eventId = event['id']).execute()
+                )
             print(response)
     except Exception as err:
         print(f"{bcolors.FAIL}{err}{bcolors.ENDC}")
