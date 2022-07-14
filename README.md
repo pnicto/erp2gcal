@@ -26,15 +26,6 @@
     ```
 6. Choose the options shown on terminal and login when propmpted.
 
-## TODO
-
-* Fix known issues.
-
-## Known Issues
-
-1. The day you run the script the calendar will be filled with all classes.
-2. Workshop Practical is counted as a regular lab class and takes 2 hours instead of 3.
-
 ## Troubleshooting
 
 1. Problem: `Authorization Error Error 403: Access_denied`<br/>
