@@ -4,9 +4,9 @@ import datetime as dt
 
 # Course class
 class Course:
-    def __init__(self, name, typ, room, days, start, end):
+    def __init__(self, name, credit, room, days, start, end):
         self.name = name
-        self.typ = typ  # LAB,LEC,TUT
+        self.credit = credit  # LAB,LEC,TUT
         self.days = days
         self.start = start
         self.room = room
@@ -27,7 +27,7 @@ def coursesGen(erp_registered_courses):
         start, end = timeGen(
             erp_registered_courses[i + 2].split()[1], erp_registered_courses[i + 1].split()[0]
         )
-        # Course (name,typ,room,days,start,end)
+        # Course (name,credit,room,days,start,end)
         courses.append(
             Course(
                 erp_registered_courses[i],
@@ -40,9 +40,9 @@ def coursesGen(erp_registered_courses):
         )
     return courses
 
-# Function which creates corresponsing time intervals depending on the type of course
+# Function which creates corresponsing time intervals depending on the credit of course
 # TODO: Workshop Lab is 3hrs but this still takes it as 2 hours
-def timeGen(inpt, typ):
+def timeGen(inpt, credit):
     hour = int(float(inpt.split(":")[0]))  # ['2', '00PM']
     meridian = inpt.split(":")[1][2:]  #'00PM' -> PM
     # Dict with time deltas accordingly
@@ -62,7 +62,7 @@ def timeGen(inpt, typ):
         dt.datetime(
             dt.datetime.now().year, dt.datetime.now().month, dt.datetime.now().day, hour
         )
-        + tdelta[typ]
+        + tdelta[credit]
     ).isoformat()
     return start, end
 
