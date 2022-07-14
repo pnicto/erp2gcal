@@ -23,7 +23,7 @@ import courseParse
 import erp
 import erp2gcal
 
-# Colors from terminal output
+# Colors for terminal output
 class bcolors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
@@ -65,7 +65,7 @@ if __name__ == "__main__":
     print(f"\n{bcolors.HEADER}1. Unenrol from prev courses, Enrol in new courses, Create calendar events\n2. Unenrol from prev courses, Enrol in new courses\n3. Enrol\n4. Unenrol\n5. Create calendar events{bcolors.ENDC}")
 
     choice = int(input(f"\n{bcolors.HEADER}Enter your choice(1-5):{bcolors.ENDC}\n"))
-    
+
     driver = select_preferred_browser()
     if choice == 1:
         try:
