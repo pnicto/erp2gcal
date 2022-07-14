@@ -1,14 +1,25 @@
 import os.path
-from pprint import pprint
 from random import randint
 
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
-from googleapiclient.errors import HttpError
 
+# Colors for terminal output
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
 
+# Function which takes care of auth
+# Directly taken from the docs
 def google_auth():
     try:
         SCOPES = ["https://www.googleapis.com/auth/calendar"]
@@ -26,33 +37,28 @@ def google_auth():
                 token.write(creds.to_json())
         return build("calendar", "v3", credentials=creds)
     except Exception as err:
-        print(err)
+        print(f"{bcolors.FAIL}{err}{bcolors.ENDC}")
 
-
-
-# print colors to know the colorIds
-# colors = service.colors().get().execute()
+# Function which creates the calendar events
 def create_gcal_events(courses,service):
+    # variable where user's end date is stored
     until = input(
         "\nTill when the events should be added? (Enter date in YYYY/MM/DD format)\n"
     )
-    print("=>")
-    print(courses)
-    print("=>")
-    print(courses[0].name)
-
     until = "".join(until.split("/")) + "T000000Z"
 
     try:
         for course in courses:
             event_body = {
                 "summary": course.name,  # Title
-                "description": course.room,  # Room
+                "description":f"{course.room}\nCreated using erp2gcal",  # Room
                 "start": {"dateTime": course.start, "timeZone": "Asia/Kolkata"},
                 "end": {
                     "dateTime": course.end,
                     "timeZone": "Asia/Kolkata",
                 },
+                # print colors to know the colorIds
+                # colors = service.colors().get().execute()
                 "colorId": randint(1, 11),
                 "recurrence": [
                     f"RRULE:FREQ=WEEKLY;UNTIL={until};BYDAY={','.join(course.day())}"
@@ -64,4 +70,4 @@ def create_gcal_events(courses,service):
             )
             print(response)
     except Exception as err:
-        print(err)
+        print(f"{bcolors.FAIL}{err}{bcolors.ENDC}")

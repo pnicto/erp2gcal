@@ -6,6 +6,17 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
+# Colors for terminal output
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
 
 # Function which goes to login page
 def perform_login(driver):
@@ -19,7 +30,7 @@ def perform_login(driver):
         WebDriverWait(driver, 50).until(
         EC.presence_of_element_located((By.ID, 'page-my-index')))
     except Exception as err:
-        print(err)
+        print(f"{bcolors.FAIL}{err}{bcolors.ENDC}")
 
 
 # Function which returns security key, session key, user id to make requests
@@ -42,7 +53,7 @@ def get_required_parameters_to_make_requests(driver):
         }
         return (security_key, session_key, user_id, cookie)
     except Exception as err:
-        print(err)
+        print(f"{bcolors.FAIL}{err}{bcolors.ENDC}")
 
 # Function which unenrolls from *all* courses
 def unenrol_from_all_courses(security_key,user_id,session_key,cookie):
@@ -64,7 +75,7 @@ def unenrol_from_all_courses(security_key,user_id,session_key,cookie):
             requests.get(
                 f"https://cms.bits-hyderabad.ac.in/enrol/self/unenrolself.php?confirm=1&enrolid={enrolId}&sesskey={session_key}", cookies=cookie)
     except Exception as err:
-        print(err)
+        print(f"{bcolors.FAIL}{err}{bcolors.ENDC}")
 
 # Function which enrolls you in *all* registered courses on ERP
 # Many thanks to PyRet#4288 for the code below.
@@ -140,4 +151,4 @@ cookie,courses, number_of_search_results=5,filter_by_category=-1):
                     except Exception as err:
                         print("Invalid choice")
     except Exception as err:
-        print(err)
+        print(f"{bcolors.FAIL}{err}{bcolors.ENDC}")
