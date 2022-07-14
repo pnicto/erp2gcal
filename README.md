@@ -26,6 +26,10 @@
     ```
 6. Choose the options shown on terminal and login when propmpted.
 
+## TODO
+
+* Fix known issues.
+
 ## Known Issues
 
 1. The day you run the script the calendar will be filled with all classes.
@@ -33,5 +37,6 @@
 
 ## Troubleshooting
 
-1. Problem: `Authorization Error Error 403: Access_denied`
+1. Problem: `Authorization Error Error 403: Access_denied`<br/>
    Solution: [Visit](https://console.cloud.google.com/), goto APIs & Services -> OAuth consent screen, select the app you created in step 3 of `Usage` and add your email under `Test Users`.
+2. Problem: `Unauthenticated`<br/>Solution: Delete the token.json and rerun the script with `Create calendar events`.
