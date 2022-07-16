@@ -43,7 +43,7 @@ def google_auth():
 def create_gcal_events(courses,service):
     # variable where user's end date is stored
     until = input(
-        "\nTill when the events should be added? (Enter date in YYYY/MM/DD format)\n"
+        f"{bcolors.OKCYAN}\nTill when the events should be added? (Enter date in YYYY/MM/DD format){bcolors.ENDC}\n"
     )
     until = "".join(until.split("/")) + "T000000Z"
 
@@ -68,26 +68,27 @@ def create_gcal_events(courses,service):
             response = (
                 service.events().insert(calendarId="primary", body=event_body).execute()
             )
-            # print(response)
+            print(f"{bcolors.OKGREEN}Successfully created events!\n{bcolors.ENDC}")
     except Exception as err:
         print(f"{bcolors.FAIL}{err}{bcolors.ENDC}")
 
 # Function for known issue #1
 # clean the events created as a side effect
 def clean_the_unnecessary_events(service):
-    # today in the format asked in docs :p
     try:
+        # today in the format asked in docs :p
+        print("=>")
         today = dt.datetime(dt.datetime.now().year, dt.datetime.now().month, dt.datetime.now().day,tzinfo=dt.timezone.utc).isoformat()
+        tomorrow= dt.datetime(dt.datetime.now().year, dt.datetime.now().month, dt.datetime.now().day+1,tzinfo=dt.timezone.utc).isoformat()
         # Gets all events for scheduled on today
-        events_list = service.events().list(calendarId='primary',singleEvents=True,orderBy='startTime',timeMin= today).execute()
+        events_list = service.events().list(calendarId='primary',singleEvents=True,orderBy='startTime',timeMin= today,timeMax= tomorrow).execute()
         events = events_list.get('items', [])
-        # Filter events with description "Created using erp2gcal"
-        events_to_remove = filter(lambda x: x['description'] == 'Created using erp2gcal',events)
         # Make delete request
-        for event in events_to_remove:
-            response = (
-                    service.events().delete(calendarId="primary", eventId = event['id']).execute()
-                )
-            print(response)
+        for event in events:
+            if 'description' in event and  'Created using erp2gcal' in event['description']:
+
+                response = service.events().delete(calendarId="primary", eventId = event['id']).execute()
+
+        print(f"{bcolors.OKGREEN}Removed unnecessary events!{bcolors.ENDC}")
     except Exception as err:
         print(f"{bcolors.FAIL}{err}{bcolors.ENDC}")
