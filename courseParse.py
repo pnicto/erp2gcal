@@ -64,6 +64,12 @@ def timeGen(inpt, credit, WSFLAG=False):
     start = dt.datetime(
         dt.datetime.now().year, dt.datetime.now().month, dt.datetime.now().day, hour
     ).isoformat()
+    end = (
+        dt.datetime(
+            dt.datetime.now().year, dt.datetime.now().month, dt.datetime.now().day, hour
+        )
+        + tdelta[credit]
+    ).isoformat()
 
     # WS Practical exception
     if WSFLAG:
@@ -73,12 +79,5 @@ def timeGen(inpt, credit, WSFLAG=False):
             )
             + dt.timedelta(hours=3)
         ).isoformat()
-
-    end = (
-        dt.datetime(
-            dt.datetime.now().year, dt.datetime.now().month, dt.datetime.now().day, hour
-        )
-        + tdelta[credit]
-    ).isoformat()
     return start, end
 
