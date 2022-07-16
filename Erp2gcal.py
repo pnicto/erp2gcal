@@ -43,7 +43,7 @@ def google_auth():
 def create_gcal_events(courses,service):
     # variable where user's end date is stored
     until = input(
-        f"{bcolors.OKCYAN}\nTill when the events should be added? (Enter date in YYYY/MM/DD format){bcolors.ENDC}\n"
+        f"{bcolors.OKCYAN}\nTill when the events should be added? (Enter date in YYYY/MM/DD format)[Excluded]{bcolors.ENDC}\n"
     )
     until = "".join(until.split("/")) + "T000000Z"
 
@@ -68,7 +68,7 @@ def create_gcal_events(courses,service):
             response = (
                 service.events().insert(calendarId="primary", body=event_body).execute()
             )
-            print(f"{bcolors.OKGREEN}Successfully created events!\n{bcolors.ENDC}")
+        print(f"{bcolors.OKGREEN}Successfully created events!\n{bcolors.ENDC}")
     except Exception as err:
         print(f"{bcolors.FAIL}{err}{bcolors.ENDC}")
 
@@ -77,7 +77,6 @@ def create_gcal_events(courses,service):
 def clean_the_unnecessary_events(service):
     try:
         # today in the format asked in docs :p
-        print("=>")
         today = dt.datetime(dt.datetime.now().year, dt.datetime.now().month, dt.datetime.now().day,tzinfo=dt.timezone.utc).isoformat()
         tomorrow= dt.datetime(dt.datetime.now().year, dt.datetime.now().month, dt.datetime.now().day+1,tzinfo=dt.timezone.utc).isoformat()
         # Gets all events for scheduled on today
