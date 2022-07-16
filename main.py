@@ -154,3 +154,5 @@ if __name__ == "__main__":
             erp2gcal.clean_the_unnecessary_events(service=gcal_service)
     except Exception as err:
         print(f"{bcolors.FAIL}{err}{bcolors.ENDC}")
+    finally:
+        driver.quit()
