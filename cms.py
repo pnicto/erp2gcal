@@ -63,7 +63,7 @@ def unenrol_from_all_courses(security_key,user_id,session_key,cookie):
             f"https://cms.bits-hyderabad.ac.in/webservice/rest/server.php?wsfunction=core_enrol_get_users_courses&moodlewsrestformat=json&wstoken={security_key}&userid={user_id}"
         ).json()
 
-        print(f"Enrolling from {len(enrolled_courses)} courses\n")
+        print(f"{bcolors.WARNING}\nUnenrolling from {len(enrolled_courses)} courses\n{bcolors.ENDC}")
 
         for course in enrolled_courses:
             print(f"Unenrolling from {course['shortname']}...")
@@ -74,6 +74,8 @@ def unenrol_from_all_courses(security_key,user_id,session_key,cookie):
             # Make unenrol request
             requests.get(
                 f"https://cms.bits-hyderabad.ac.in/enrol/self/unenrolself.php?confirm=1&enrolid={enrolId}&sesskey={session_key}", cookies=cookie)
+
+            print(f"{bcolors.OKGREEN}\nUnenrolled from {course['shortname']}.{bcolors.ENDC}")
     except Exception as err:
         print(f"{bcolors.FAIL}{err}{bcolors.ENDC}")
 
@@ -82,7 +84,7 @@ def unenrol_from_all_courses(security_key,user_id,session_key,cookie):
 def enrol_all_registered_courses(security_key,
 cookie,courses, number_of_search_results=5,filter_by_category=-1):
     try:
-        print(f"Trying to enroll into {len(courses)} courses")
+        print(f"Trying to enroll into {len(courses)} courses\n")
         for course in courses:
             print(f"Searching for {course.name} in courses...")
             course_search_term =" ".join( course.name.split("-"))
@@ -90,13 +92,13 @@ cookie,courses, number_of_search_results=5,filter_by_category=-1):
                 f"https://cms.bits-hyderabad.ac.in/webservice/rest/server.php?wsfunction=core_course_search_courses&moodlewsrestformat=json&wstoken={security_key}&criterianame=search&criteriavalue={course_search_term}&perpage={number_of_search_results}&page=0", cookies=cookie).json()
             totalPages = ceil(searchRes['total'] / number_of_search_results)
             if totalPages == 0:
-                print(f"No results found for '{course_search_term}'. Press enter to continue")
+                print(f"{bcolors.WARNING}No results found for '{course_search_term}'. Press enter to continue{bcolors.ENDC}")
                 input()
                 continue
             keepLoading = True
             pageNum = 0
             while keepLoading:
-                print(f"[Page {pageNum + 1} of {totalPages}]")
+                print(f"{bcolors.OKGREEN}[Page {pageNum + 1} of {totalPages}]")
                 for resNum in range(min(searchRes['total'], number_of_search_results)):
                     if filter_by_category > 0:
                         if searchRes['courses'][resNum]['categoryid'] != filter_by_category:
@@ -107,11 +109,11 @@ cookie,courses, number_of_search_results=5,filter_by_category=-1):
                     print(
                         f"\tIntructors: {', '.join([x['fullname'] for x in searchRes['courses'][resNum]['contacts']])}")
                     print()
-                print("""
+                print(bcolors.WARNING+"""
         Enter one of the above numbers to enrol into the corresponding course.
         Type in 'n' and 'p' to navigate to the next and previous pages respectively.
         To skip this course, type in 's'
-                    """)
+                    """+bcolors.ENDC)
                 choice = input()
                 if choice == "s":
                     keepLoading = False
@@ -139,16 +141,16 @@ cookie,courses, number_of_search_results=5,filter_by_category=-1):
                                 f"https://cms.bits-hyderabad.ac.in/webservice/rest/server.php?wsfunction=enrol_self_enrol_user&moodlewsrestformat=json&wstoken={security_key}&courseid={cid}", cookies=cookie).json()
                             if enrolRes['status']:
                                 print(
-                                    f"Enrolled in course {searchRes['courses'][resNum]['fullname']} successfully!"  )
+                                    f"{bcolors.OKGREEN}Enrolled in course {searchRes['courses'][resNum]['fullname']} successfully!{bcolors.ENDC}"  )
                                 print()
                             else:
                                 print(
-                                    f"Course enrollment in {searchRes['courses'][resNum]['fullname']} failed"  )
+                                    f"{bcolors.FAIL}Course enrollment in {searchRes['courses'][resNum]['fullname']} failed{bcolors.ENDC}"  )
                                 print()
                             keepLoading = False
                         else:
                             print("Invalid choice")
                     except Exception as err:
-                        print("Invalid choice")
+                        print(f"{bcolors.FAIL}{err}{bcolors.ENDC}")
     except Exception as err:
         print(f"{bcolors.FAIL}{err}{bcolors.ENDC}")
