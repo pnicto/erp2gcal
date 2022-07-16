@@ -25,10 +25,6 @@
     ```
 5. Choose the options shown on terminal and login when propmpted.
 
-## Known Issues
-
-1. Workshop Practical is counted as a regular lab class and takes 2 hours instead of 3.
-
 ## Troubleshooting
 
 1. Problem: `Authorization Error Error 403: Access_denied`<br/>
