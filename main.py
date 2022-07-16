@@ -14,8 +14,6 @@ from webdriver_manager.firefox import GeckoDriverManager
 # Brave imports
 from selenium.webdriver.chrome.service import Service as BraveService
 from webdriver_manager.core.utils import ChromeType
-# Opera imports
-from webdriver_manager.opera import OperaDriverManager
 
 import cms
 import courseParse
@@ -36,7 +34,7 @@ class bcolors:
 
 def select_preferred_browser():
     print(f"\n{bcolors.OKCYAN}Choose an installed browser among the list:{bcolors.ENDC}\n")
-    print(f"{bcolors.OKCYAN}1. Edge\n2. Chrome\n3. Firefox\n4. Brave\n5. Opera{bcolors.ENDC}")
+    print(f"{bcolors.OKCYAN}1. Edge\n2. Chrome\n3. Firefox\n4. Brave\n")
 
     browser_choice = int(input(f"\n{bcolors.HEADER}Enter your choice(1-5):{bcolors.ENDC}\n"))
     if browser_choice==1:
@@ -152,7 +150,6 @@ if __name__ == "__main__":
             )
             # Remove the side effect
             erp2gcal.clean_the_unnecessary_events(service=gcal_service)
+        driver.quit()
     except Exception as err:
         print(f"{bcolors.FAIL}{err}{bcolors.ENDC}")
-    finally:
-        driver.quit()
