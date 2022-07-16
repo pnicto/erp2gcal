@@ -27,7 +27,7 @@ def perform_login(driver):
         login_button = driver.find_element(By.LINK_TEXT, 'Google')
         login_button.click()
         # Login action waiting for user to enter details to login
-        WebDriverWait(driver, 50).until(
+        WebDriverWait(driver, 100).until(
         EC.presence_of_element_located((By.ID, 'page-my-index')))
     except Exception as err:
         print(f"{bcolors.FAIL}{err}{bcolors.ENDC}")
@@ -38,11 +38,17 @@ def get_required_parameters_to_make_requests(driver):
     try:
     # Preferences page to get security key and session key
         driver.get('https://cms.bits-hyderabad.ac.in/user/preferences.php')
+        WebDriverWait(driver, 15).until(
+        EC.presence_of_element_located((By.LINK_TEXT, 'Security keys')))
         driver.find_element(By.LINK_TEXT, 'Security keys').click()
+        WebDriverWait(driver, 15).until(
+        EC.presence_of_element_located((By.CSS_SELECTOR, '.cell.c0')))
         security_key = driver.find_element(By.CSS_SELECTOR, '.cell.c0').text
         session_key = driver.current_url.split('=')[1]
         # Clicking profile page to get user id
         driver.find_element(By.CLASS_NAME, 'usertext').click()
+        WebDriverWait(driver, 50).until(
+        EC.presence_of_element_located((By.ID, 'actionmenuaction-2')))
         driver.find_element(By.ID, 'actionmenuaction-2').click()
         user_id = driver.current_url.split('=')[1]
         # Session token from cookies
@@ -63,7 +69,7 @@ def unenrol_from_all_courses(security_key,user_id,session_key,cookie):
             f"https://cms.bits-hyderabad.ac.in/webservice/rest/server.php?wsfunction=core_enrol_get_users_courses&moodlewsrestformat=json&wstoken={security_key}&userid={user_id}"
         ).json()
 
-        print(f"{bcolors.WARNING}\nUnenrolling from {len(enrolled_courses)} courses\n{bcolors.ENDC}")
+        print(f"{bcolors.WARNING}\nUnenrolling from {len(enrolled_courses)} courses{bcolors.ENDC}")
 
         for course in enrolled_courses:
             print(f"Unenrolling from {course['shortname']}...")
@@ -75,7 +81,7 @@ def unenrol_from_all_courses(security_key,user_id,session_key,cookie):
             requests.get(
                 f"https://cms.bits-hyderabad.ac.in/enrol/self/unenrolself.php?confirm=1&enrolid={enrolId}&sesskey={session_key}", cookies=cookie)
 
-            print(f"{bcolors.OKGREEN}\nUnenrolled from {course['shortname']}.{bcolors.ENDC}")
+            print(f"{bcolors.OKGREEN}Unenrolled from {course['shortname']}.\n{bcolors.ENDC}")
     except Exception as err:
         print(f"{bcolors.FAIL}{err}{bcolors.ENDC}")
 

@@ -21,7 +21,7 @@ def navigation_and_login(driver):
     try:
         driver.get("https://sis.erp.bits-pilani.ac.in/psc/sisprd/EMPLOYEE/SA/c/SA_LEARNER_SERVICES.SSS_STUDENT_CENTER.GBL?NavColl=true&ICAGTarget=start")
 
-        WebDriverWait(driver, 50).until(
+        WebDriverWait(driver, 100).until(
         EC.presence_of_element_located((By.CLASS_NAME, 'PATRANSACTIONTITLE')))
     except Exception as err:
         print(f"{bcolors.FAIL}{err}{bcolors.ENDC}")
