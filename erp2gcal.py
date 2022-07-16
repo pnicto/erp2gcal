@@ -48,6 +48,7 @@ def create_gcal_events(courses,service):
     until = "".join(until.split("/")) + "T000000Z"
 
     try:
+        print(f"{bcolors.OKGREEN}Creating events...\n{bcolors.ENDC}")
         for course in courses:
             event_body = {
                 "summary": course.name,  # Title
@@ -68,7 +69,7 @@ def create_gcal_events(courses,service):
             response = (
                 service.events().insert(calendarId="primary", body=event_body).execute()
             )
-            print(f"{bcolors.OKGREEN}Successfully created events!\n{bcolors.ENDC}")
+            print(f"{bcolors.OKGREEN}Successfully created events!{bcolors.ENDC}")
     except Exception as err:
         print(f"{bcolors.FAIL}{err}{bcolors.ENDC}")
 
