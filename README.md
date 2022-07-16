@@ -16,15 +16,18 @@
    2. Now go to APIs & Services -> Credentials, Create a project and then Create Credentials -> Oauth client ID -> Desktop app as application type after creating download it as json.
    </details>
 3. Rename the downloaded file as `credentials.json` and place it along with the downloaded files from step 1.
-4. Run
+4. In the directory, run the following commands.
    ```
    pip install -r requirements.txt
    ```
-5. Run
    ```py
     python main.py
     ```
-6. Choose the options shown on terminal and login when propmpted.
+5. Choose the options shown on terminal and login when propmpted.
+
+## Known Issues
+
+1. Workshop Practical is counted as a regular lab class and takes 2 hours instead of 3.
 
 ## Troubleshooting
 
