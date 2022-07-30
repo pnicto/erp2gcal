@@ -19,6 +19,7 @@ class Course:
             days.append(self.days[i : i + 2].upper())
         return days
 
+
 # Function which takes the list format courses and creates "Course" class instance for them
 def coursesGen(erp_registered_courses):
     courses = []
@@ -31,8 +32,9 @@ def coursesGen(erp_registered_courses):
             WSFLAG = True
 
         start, end = timeGen(
-            erp_registered_courses[i + 2].split()[1], erp_registered_courses[i + 1].split()[0],
-            WSFLAG
+            erp_registered_courses[i + 2].split()[1],
+            erp_registered_courses[i + 1].split()[0],
+            WSFLAG,
         )
         # Course (name,credit,room,days,start,end)
         courses.append(
@@ -46,6 +48,7 @@ def coursesGen(erp_registered_courses):
             )
         )
     return courses
+
 
 # Function which creates corresponsing time intervals depending on the credit of course
 # Workshop Lab is 3hrs but this still takes it as 2 hours
@@ -75,9 +78,11 @@ def timeGen(inpt, credit, WSFLAG=False):
     if WSFLAG:
         end = (
             dt.datetime(
-                dt.datetime.now().year, dt.datetime.now().month, dt.datetime.now().day, hour
+                dt.datetime.now().year,
+                dt.datetime.now().month,
+                dt.datetime.now().day,
+                hour,
             )
             + dt.timedelta(hours=3)
         ).isoformat()
     return start, end
-

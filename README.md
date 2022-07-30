@@ -2,8 +2,8 @@
 
 ## Features
 
-* Enroll/unenroll batch from cms.
-* Create google calendar events with ease.
+- Enroll/unenroll batch from cms.
+- Create google calendar events with ease.
 
 ## Usage
 
@@ -15,6 +15,7 @@
    1. <a href="https://console.cloud.google.com/">Visit</a> in the side bar choose APIs & Services -> Library Search for google calendar and enable it.
    2. Now go to APIs & Services -> Credentials, Create a project and then Create Credentials -> Oauth client ID -> Desktop app as application type after creating download it as json.
    </details>
+
 3. Rename the downloaded file as `credentials.json` and place it along with the downloaded files from step 1.
 4. In the directory, run the following commands.
    ```
@@ -22,7 +23,7 @@
    ```
    ```py
     python main.py
-    ```
+   ```
 5. Choose the options shown on terminal and login when propmpted.
 
 ## Troubleshooting
