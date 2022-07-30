@@ -1,16 +1,20 @@
 # Selenium imports
 from selenium import webdriver
+
 # Edge imports
 from selenium.webdriver.edge.service import Service as EdgeService
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
 from selenium.webdriver.edge.options import Options as edge_options
+
 # Chrome imports
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options as chrome_options
+
 # Firefox imports
 from selenium.webdriver.firefox.service import Service as FirefoxService
 from webdriver_manager.firefox import GeckoDriverManager
+
 # Brave imports
 from selenium.webdriver.chrome.service import Service as BraveService
 from webdriver_manager.core.utils import ChromeType
@@ -22,39 +26,55 @@ import erp2gcal
 
 # Colors for terminal output
 class bcolors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKCYAN = '\033[96m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
+    HEADER = "\033[95m"
+    OKBLUE = "\033[94m"
+    OKCYAN = "\033[96m"
+    OKGREEN = "\033[92m"
+    WARNING = "\033[93m"
+    FAIL = "\033[91m"
+    ENDC = "\033[0m"
+    BOLD = "\033[1m"
+    UNDERLINE = "\033[4m"
+
 
 def select_preferred_browser():
-    print(f"\n{bcolors.OKCYAN}Choose an installed browser among the list:{bcolors.ENDC}\n")
+    print(
+        f"\n{bcolors.OKCYAN}Choose an installed browser among the list:{bcolors.ENDC}\n"
+    )
     print(f"{bcolors.OKCYAN}1. Edge\n2. Chrome\n3. Firefox\n4. Brave\n")
 
-    browser_choice = int(input(f"\n{bcolors.HEADER}Enter your choice(1-5):{bcolors.ENDC}\n"))
-    if browser_choice==1:
+    browser_choice = int(
+        input(f"\n{bcolors.HEADER}Enter your choice(1-5):{bcolors.ENDC}\n")
+    )
+    if browser_choice == 1:
         # Welp I tried turning the webdriver messages off let's see how well
         options = edge_options()
         options.add_argument("--log-level=OFF")
         options.add_experimental_option("excludeSwitches", ["enable-automation"])
-        driver = webdriver.Edge(service=EdgeService(EdgeChromiumDriverManager().install()))
-    elif browser_choice==2:
+        driver = webdriver.Edge(
+            service=EdgeService(EdgeChromiumDriverManager().install())
+        )
+    elif browser_choice == 2:
         options = chrome_options()
         options.add_argument("--log-level=OFF")
         options.add_experimental_option("excludeSwitches", ["enable-automation"])
-        driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
-    elif browser_choice==3:
-        driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()))
-    elif browser_choice==4:
-        driver = webdriver.Chrome(service=BraveService(ChromeDriverManager(chrome_type=ChromeType.BRAVE).install()))
+        driver = webdriver.Chrome(
+            service=ChromeService(ChromeDriverManager().install())
+        )
+    elif browser_choice == 3:
+        driver = webdriver.Firefox(
+            service=FirefoxService(GeckoDriverManager().install())
+        )
+    elif browser_choice == 4:
+        driver = webdriver.Chrome(
+            service=BraveService(
+                ChromeDriverManager(chrome_type=ChromeType.BRAVE).install()
+            )
+        )
     else:
-        print(f'{bcolors.FAIL}Choose from the given options{bcolors.ENDC}')
+        print(f"{bcolors.FAIL}Choose from the given options{bcolors.ENDC}")
     return driver
+
 
 if __name__ == "__main__":
     try:
@@ -75,9 +95,13 @@ if __name__ == "__main__":
         courses = courseParse.coursesGen(erp_registered_courses)
         driver.quit()
 
-        print(f"\n{bcolors.HEADER}1. Unenrol from prev courses, Enrol in new courses, Create calendar events\n2. Unenrol from prev courses, Enrol in new courses\n3. Enrol\n4. Unenrol\n5. Create calendar events{bcolors.ENDC}")
+        print(
+            f"\n{bcolors.HEADER}1. Unenrol from prev courses, Enrol in new courses, Create calendar events\n2. Unenrol from prev courses, Enrol in new courses\n3. Enrol\n4. Unenrol\n5. Create calendar events{bcolors.ENDC}"
+        )
 
-        choice = int(input(f"\n{bcolors.HEADER}Enter your choice(1-5):{bcolors.ENDC}\n"))
+        choice = int(
+            input(f"\n{bcolors.HEADER}Enter your choice(1-5):{bcolors.ENDC}\n")
+        )
 
         if choice == 1:
             # Unenrol
@@ -120,9 +144,7 @@ if __name__ == "__main__":
             )
 
             cms.enrol_main_sections(
-                courses=courses,
-                cookie=cookie,
-                security_key=security_key
+                courses=courses, cookie=cookie, security_key=security_key
             )
 
         elif choice == 3:
@@ -141,7 +163,6 @@ if __name__ == "__main__":
                 security_key=security_key,
                 cookie=cookie,
             )
-
 
         elif choice == 5:
             # Calendar events
