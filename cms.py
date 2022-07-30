@@ -138,15 +138,11 @@ def enrol_all_registered_courses(
                     print(
                         f"\tInstructors: {', '.join([x['fullname'] for x in searchRes['courses'][resNum]['contacts']])}"
                     )
-                    print(f"CID: {searchRes['courses'][resNum]['id']}")
                     print()
+
                 print(
                     bcolors.WARNING
-                    + """
-        Enter one of the above numbers to enrol into the corresponding course.
-        Type in 'n' and 'p' to navigate to the next and previous pages respectively.
-        To skip this course, type in 's'
-                    """
+                    + "Enter one of the above numbers to enrol into the corresponding course.\nType in 'n' and 'p' to navigate to the next and previous pages respectively.\nTo skip this course, type in 's'\n"
                     + bcolors.ENDC
                 )
                 choice = input()
@@ -173,13 +169,11 @@ def enrol_all_registered_courses(
                 else:
                     try:
                         choice = int(choice)
-                        print(choice)
                         if (
                             choice <= min(searchRes["total"], number_of_search_results)
                             and choice > 0
                         ):
                             # Enrol course
-                            print("Normal Course")
                             cid = searchRes["courses"][
                                 pageNum * number_of_search_results + (choice - 1)
                             ]["id"]
@@ -213,17 +207,14 @@ def enrol_main_sections(
     security_key, cookie, courses, number_of_search_results=5, filter_by_category=-1
 ):
     try:
+        print(f"{bcolors.HEADER}Enrolling into L/P sections\n{bcolors.ENDC}")
         for course in courses:
             course_search_term = " ".join(course.name.split("-"))[:-1]
-            print(f"{bcolors.HEADER}Enrolling into L/P sections{bcolors.ENDC}")
             if (
                 course_search_term.endswith("P") or course_search_term.endswith("L")
-            ) and course_search_term != "ME F111 P":
-                print(
-                    f"{bcolors.OKGREEN}Searching for {course_search_term}{bcolors.ENDC}\n"
-                )
+            ) and (course_search_term != "ME F111 P"):
+                print(f"\nSearching for {course_search_term}")
 
-                # Normal course search
                 searchRes = requests.get(
                     f"https://cms.bits-hyderabad.ac.in/webservice/rest/server.php?wsfunction=core_course_search_courses&moodlewsrestformat=json&wstoken={security_key}&criterianame=search&criteriavalue={course_search_term}&perpage={number_of_search_results}&page=0",
                     cookies=cookie,
@@ -257,15 +248,10 @@ def enrol_main_sections(
                         print(
                             f"\tInstructors: {', '.join([x['fullname'] for x in searchRes['courses'][resNum]['contacts']])}"
                         )
-                        print(f"CID: {searchRes['courses'][resNum]['id']}")
                         print()
                     print(
                         bcolors.WARNING
-                        + """
-            Enter one of the above numbers to enrol into the corresponding course.
-            Type in 'n' and 'p' to navigate to the next and previous pages respectively.
-            To skip this course, type in 's'
-                        """
+                        + "Enter one of the above numbers to enrol into the corresponding course.\nType in 'n' and 'p' to navigate to the next and previous pages respectively.\nTo skip this course, type in 's'\n"
                         + bcolors.ENDC
                     )
                     choice = input()
@@ -292,14 +278,12 @@ def enrol_main_sections(
                     else:
                         try:
                             choice = int(choice)
-                            print(choice)
                             if (
                                 choice
                                 <= min(searchRes["total"], number_of_search_results)
                                 and choice > 0
                             ):
                                 # Enrol course
-                                print("MAIN COURSE Course")
                                 cid = searchRes["courses"][
                                     pageNum * number_of_search_results + (choice - 1)
                                 ]["id"]
