@@ -47,7 +47,7 @@ def select_preferred_browser():
         input(f"\n{bcolors.HEADER}Enter your choice(1-5):{bcolors.ENDC}\n")
     )
     if browser_choice == 1:
-        # Welp I tried turning the webdriver messages off let's see how well
+        # Welp I tried turning the webdriver messages off let's see how well it does
         options = edge_options()
         options.add_argument("--log-level=OFF")
         options.add_experimental_option("excludeSwitches", ["enable-automation"])
@@ -117,6 +117,10 @@ if __name__ == "__main__":
                 cookie=cookie,
                 security_key=security_key,
             )
+            cms.enrol_main_sections(
+                courses=courses, cookie=cookie, security_key=security_key
+            )
+
             # Calendar events
             # Google calenda auth
             gcal_service = erp2gcal.google_auth()
@@ -175,6 +179,6 @@ if __name__ == "__main__":
             )
             # Remove the side effect
             erp2gcal.clean_the_unnecessary_events(service=gcal_service)
-        driver.quit()
+
     except Exception as err:
         print(f"{bcolors.FAIL}{err}{bcolors.ENDC}")
