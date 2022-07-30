@@ -69,11 +69,7 @@ def create_gcal_events(courses,service):
             response = (
                 service.events().insert(calendarId="primary", body=event_body).execute()
             )
-<<<<<<< HEAD:Erp2gcal.py
-        print(f"{bcolors.OKGREEN}Successfully created events!\n{bcolors.ENDC}")
-=======
             print(f"{bcolors.OKGREEN}Successfully created events!{bcolors.ENDC}")
->>>>>>> a1dde3d3a6031457230c02301473ed1429519cff:erp2gcal.py
     except Exception as err:
         print(f"{bcolors.FAIL}{err}{bcolors.ENDC}")
 

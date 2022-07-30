@@ -87,6 +87,7 @@ def unenrol_from_all_courses(security_key,user_id,session_key,cookie):
 
 # Function which enrolls you in *all* registered courses on ERP
 # Many thanks to PyRet#4288 for the code below.
+# Please do not try to understand :D
 def enrol_all_registered_courses(security_key,
 cookie,courses, number_of_search_results=5,filter_by_category=-1):
     try:
@@ -94,6 +95,8 @@ cookie,courses, number_of_search_results=5,filter_by_category=-1):
         for course in courses:
             print(f"Searching for {course.name} in courses...")
             course_search_term =" ".join( course.name.split("-"))
+
+            # Normal course search
             searchRes = requests.get(
                 f"https://cms.bits-hyderabad.ac.in/webservice/rest/server.php?wsfunction=core_course_search_courses&moodlewsrestformat=json&wstoken={security_key}&criterianame=search&criteriavalue={course_search_term}&perpage={number_of_search_results}&page=0", cookies=cookie).json()
             totalPages = ceil(searchRes['total'] / number_of_search_results)
@@ -113,7 +116,8 @@ cookie,courses, number_of_search_results=5,filter_by_category=-1):
                     print(
                         f"\tCategory: {searchRes['courses'][resNum]['categoryname']}")
                     print(
-                        f"\tIntructors: {', '.join([x['fullname'] for x in searchRes['courses'][resNum]['contacts']])}")
+                        f"\tInstructors: {', '.join([x['fullname'] for x in searchRes['courses'][resNum]['contacts']])}")
+                    print(f"CID: {searchRes['courses'][resNum]['id']}")
                     print()
                 print(bcolors.WARNING+"""
         Enter one of the above numbers to enrol into the corresponding course.
@@ -140,8 +144,11 @@ cookie,courses, number_of_search_results=5,filter_by_category=-1):
                 else:
                     try:
                         choice = int(choice)
+                        print(choice)
                         if choice <= min(searchRes['total'], number_of_search_results) and choice > 0:
                             # Enrol course
+                            print("Normal Course")
+                            print(resNum)
                             cid = searchRes['courses'][resNum]['id']
                             enrolRes = requests.get(
                                 f"https://cms.bits-hyderabad.ac.in/webservice/rest/server.php?wsfunction=enrol_self_enrol_user&moodlewsrestformat=json&wstoken={security_key}&courseid={cid}", cookies=cookie).json()
@@ -156,6 +163,91 @@ cookie,courses, number_of_search_results=5,filter_by_category=-1):
                             keepLoading = False
                         else:
                             print("Invalid choice")
+
+                    except Exception as err:
+                        print(f"{bcolors.FAIL}{err}{bcolors.ENDC}")
+
+    except Exception as err:
+        print(f"{bcolors.FAIL}{err}{bcolors.ENDC}")
+
+# Laziness got the best of me so instead of coming up with something new I just changed few lines in the normal one 💀
+def enrol_main_sections(security_key,
+cookie,courses, number_of_search_results=5,filter_by_category=-1):
+    try:
+        for course in courses:
+            course_search_term =" ".join( course.name.split("-"))[:-1]
+            print(f"{bcolors.HEADER}Enrolling into L/P sections{bcolors.ENDC}")
+            if (course_search_term.endswith('P') or course_search_term.endswith('L')) and course_search_term!='ME F111 P':
+                print(f"{bcolors.OKGREEN}Searching for {course_search_term}{bcolors.ENDC}\n")
+
+            # Normal course search
+            searchRes = requests.get(
+                f"https://cms.bits-hyderabad.ac.in/webservice/rest/server.php?wsfunction=core_course_search_courses&moodlewsrestformat=json&wstoken={security_key}&criterianame=search&criteriavalue={course_search_term}&perpage={number_of_search_results}&page=0", cookies=cookie).json()
+            totalPages = ceil(searchRes['total'] / number_of_search_results)
+            if totalPages == 0:
+                print(f"{bcolors.WARNING}No results found for '{course_search_term}'. Press enter to continue{bcolors.ENDC}")
+                input()
+                continue
+            keepLoading = True
+            pageNum = 0
+            while keepLoading:
+                print(f"{bcolors.OKGREEN}[Page {pageNum + 1} of {totalPages}]")
+                for resNum in range(min(searchRes['total'], number_of_search_results)):
+                    if filter_by_category > 0:
+                        if searchRes['courses'][resNum]['categoryid'] != filter_by_category:
+                            continue
+                    print(f"{resNum + 1}. {searchRes['courses'][resNum]['fullname']}")
+                    print(
+                        f"\tCategory: {searchRes['courses'][resNum]['categoryname']}")
+                    print(
+                        f"\tInstructors: {', '.join([x['fullname'] for x in searchRes['courses'][resNum]['contacts']])}")
+                    print(f"CID: {searchRes['courses'][resNum]['id']}")
+                    print()
+                print(bcolors.WARNING+"""
+        Enter one of the above numbers to enrol into the corresponding course.
+        Type in 'n' and 'p' to navigate to the next and previous pages respectively.
+        To skip this course, type in 's'
+                    """+bcolors.ENDC)
+                choice = input()
+                if choice == "s":
+                    keepLoading = False
+                elif choice == "n":
+                    if (pageNum + 1) >= totalPages:
+                        print("You are on the last page.")
+                        continue
+                    pageNum += 1
+                    searchRes = requests.get(
+                        f"https://cms.bits-hyderabad.ac.in/webservice/rest/server.php?wsfunction=core_course_search_courses&moodlewsrestformat=json&wstoken={security_key}&criterianame=search&criteriavalue={course_search_term}&perpage={number_of_search_results}&page={pageNum}", cookies=cookie).json()
+                elif choice == "p":
+                    if (pageNum - 1) < 0:
+                        print("You are on the first page.")
+                        continue
+                    pageNum -= 1
+                    searchRes = requests.get(
+                        f"https://cms.bits-hyderabad.ac.in/webservice/rest/server.php?wsfunction=core_course_search_courses&moodlewsrestformat=json&wstoken={security_key}&criterianame=search&criteriavalue={course_search_term}&perpage={number_of_search_results}&page={pageNum}", cookies=cookie).json()
+                else:
+                    try:
+                        choice = int(choice)
+                        print(choice)
+                        if choice <= min(searchRes['total'], number_of_search_results) and choice > 0:
+                            # Enrol course
+                            print("MAIN COURSE Course")
+                            print(resNum)
+                            cid = searchRes['courses'][resNum]['id']
+                            enrolRes = requests.get(
+                                f"https://cms.bits-hyderabad.ac.in/webservice/rest/server.php?wsfunction=enrol_self_enrol_user&moodlewsrestformat=json&wstoken={security_key}&courseid={cid}", cookies=cookie).json()
+                            if enrolRes['status']:
+                                print(
+                                    f"{bcolors.OKGREEN}Enrolled in course {searchRes['courses'][resNum]['fullname']} successfully!{bcolors.ENDC}"  )
+                                print()
+                            else:
+                                print(
+                                    f"{bcolors.FAIL}Course enrollment in {searchRes['courses'][resNum]['fullname']} failed{bcolors.ENDC}"  )
+                                print()
+                            keepLoading = False
+                        else:
+                            print("Invalid choice")
+
                     except Exception as err:
                         print(f"{bcolors.FAIL}{err}{bcolors.ENDC}")
     except Exception as err:

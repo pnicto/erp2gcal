@@ -52,8 +52,6 @@ def select_preferred_browser():
         driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()))
     elif browser_choice==4:
         driver = webdriver.Chrome(service=BraveService(ChromeDriverManager(chrome_type=ChromeType.BRAVE).install()))
-    elif browser_choice==5:
-        driver = webdriver.Opera(executable_path=OperaDriverManager().install())
     else:
         print(f'{bcolors.FAIL}Choose from the given options{bcolors.ENDC}')
     return driver
@@ -75,6 +73,7 @@ if __name__ == "__main__":
         erp_registered_courses = erp.get_schedule(driver)
         # Create "Course" class instances
         courses = courseParse.coursesGen(erp_registered_courses)
+        driver.quit()
 
         print(f"\n{bcolors.HEADER}1. Unenrol from prev courses, Enrol in new courses, Create calendar events\n2. Unenrol from prev courses, Enrol in new courses\n3. Enrol\n4. Unenrol\n5. Create calendar events{bcolors.ENDC}")
 
@@ -120,6 +119,11 @@ if __name__ == "__main__":
                 security_key=security_key,
             )
 
+            cms.enrol_main_sections(
+                courses=courses,
+                cookie=cookie,
+                security_key=security_key
+            )
 
         elif choice == 3:
             # Enrol
