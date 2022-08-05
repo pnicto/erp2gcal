@@ -15,10 +15,6 @@ from selenium.webdriver.chrome.options import Options as chrome_options
 from selenium.webdriver.firefox.service import Service as FirefoxService
 from webdriver_manager.firefox import GeckoDriverManager
 
-# Brave imports
-from selenium.webdriver.chrome.service import Service as BraveService
-from webdriver_manager.core.utils import ChromeType
-
 import cms
 import courseParse
 import erp
@@ -41,10 +37,10 @@ def select_preferred_browser():
     print(
         f"\n{bcolors.OKCYAN}Choose an installed browser among the list:{bcolors.ENDC}\n"
     )
-    print(f"{bcolors.OKCYAN}1. Edge\n2. Chrome\n3. Firefox\n4. Brave\n")
+    print(f"{bcolors.OKCYAN}1. Edge\n2. Chrome\n3. Firefox\n{bcolors.ENDC}")
 
     browser_choice = int(
-        input(f"\n{bcolors.HEADER}Enter your choice(1-5):{bcolors.ENDC}\n")
+        input(f"\n{bcolors.HEADER}Enter your choice(1-3):{bcolors.ENDC}\n")
     )
     if browser_choice == 1:
         # Welp I tried turning the webdriver messages off let's see how well it does
@@ -64,12 +60,6 @@ def select_preferred_browser():
     elif browser_choice == 3:
         driver = webdriver.Firefox(
             service=FirefoxService(GeckoDriverManager().install())
-        )
-    elif browser_choice == 4:
-        driver = webdriver.Chrome(
-            service=BraveService(
-                ChromeDriverManager(chrome_type=ChromeType.BRAVE).install()
-            )
         )
     else:
         print(f"{bcolors.FAIL}Choose from the given options{bcolors.ENDC}")
