@@ -2,7 +2,7 @@ from math import ceil
 
 import requests
 
-# # Selenium imports
+# Selenium imports
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
@@ -50,13 +50,16 @@ def get_required_parameters_to_make_requests(driver):
         )
         security_key = driver.find_element(By.CSS_SELECTOR, ".cell.c0").text
         session_key = driver.current_url.split("=")[1]
-        # Clicking profile page to get user id
-        driver.find_element(By.CLASS_NAME, "usertext").click()
-        WebDriverWait(driver, 50).until(
-            EC.presence_of_element_located((By.ID, "actionmenuaction-2"))
+
+        # Since firefox was having issue clicking that context menu this is a workaround for that
+        driver.get("https://cms.bits-hyderabad.ac.in/user/preferences.php")
+        WebDriverWait(driver, 15).until(
+            EC.presence_of_element_located((By.LINK_TEXT, "Edit profile"))
         )
-        driver.find_element(By.ID, "actionmenuaction-2").click()
-        user_id = driver.current_url.split("=")[1]
+        # Goes to the edit profile menu to get user id
+        driver.find_element(By.LINK_TEXT, "Edit profile").click()
+        user_id = driver.current_url.split("&")[0].split("=")[1]
+
         # Session token from cookies
         moodle_session = driver.get_cookie("MoodleSession")["value"]
         # Cookie
