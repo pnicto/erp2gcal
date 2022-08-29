@@ -5,6 +5,9 @@
 - Enroll/unenroll batch from cms.
 - Create google calendar events with ease.
 
+## TODO
+
+* Make it work for timings of classes which are split and not uniform.
 ## Usage
 
 1. [Download](https://github.com/pnicto/erp2gcal/archive/refs/heads/master.zip) the repo.
@@ -24,7 +27,7 @@
    ```py
     python main.py
    ```
-5. Choose the options shown on terminal and login when propmpted.
+5. Choose the options shown on terminal and login when prompted.
 
 ## Troubleshooting
 
