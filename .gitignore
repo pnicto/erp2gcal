@@ -2,3 +2,4 @@ credentials.json
 token.json
 *.log
 /__pycache__
+/.venv
