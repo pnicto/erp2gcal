@@ -105,7 +105,7 @@ def unenrol_from_all_courses(security_key, user_id, session_key, cookie):
 # Many thanks to PyRet#4288 for the code below.
 # Please do not try to understand :D
 def enrol_all_registered_courses(
-    security_key, cookie, courses, number_of_search_results=5, filter_by_category=-1
+    security_key, cookie, courses, number_of_search_results=100, filter_by_category=-1
 ):
     try:
         print(f"Trying to enroll into {len(courses)} courses\n")
@@ -207,7 +207,7 @@ def enrol_all_registered_courses(
 
 # Laziness got the best of me so instead of coming up with something new I just changed few lines in the normal one 💀
 def enrol_main_sections(
-    security_key, cookie, courses, number_of_search_results=5, filter_by_category=-1
+    security_key, cookie, courses, number_of_search_results=100, filter_by_category=-1
 ):
     try:
         print(f"{bcolors.HEADER}Enrolling into L/P sections\n{bcolors.ENDC}")
