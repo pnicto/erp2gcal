@@ -149,6 +149,10 @@ if __name__ == "__main__":
                 security_key=security_key,
             )
 
+            cms.enrol_main_sections(
+                courses=courses, cookie=cookie, security_key=security_key
+            )
+
         elif choice == 4:
             # Unenrol
             cms.unenrol_from_all_courses(
