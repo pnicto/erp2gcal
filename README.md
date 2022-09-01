@@ -5,9 +5,6 @@
 - Enroll/unenroll batch from cms.
 - Create google calendar events with ease.
 
-## TODO
-
-* Make it work for timings of classes which are split and not uniform.
 ## Usage
 
 1. [Download](https://github.com/pnicto/erp2gcal/archive/refs/heads/master.zip) the repo.
@@ -35,5 +32,6 @@
    Solution: [Visit](https://console.cloud.google.com/), goto APIs & Services -> OAuth consent screen, select the app you created in step 3 of `Usage` and add your email under `Test Users`.
 2. Problem: `Unauthenticated`<br/>Solution: Delete the token.json and rerun the script with `Create calendar events`.
 
-# TODO
+## TODO
 1. Refactor the enrolment functions in `cms.py`.
+2. Since ERP isn't showing room numbers need to figure out something to add room numbers from the timetable pdf.
