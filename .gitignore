@@ -3,3 +3,4 @@ token.json
 *.log
 /__pycache__
 /.venv
+.vscode/settings.json
