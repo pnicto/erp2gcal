@@ -8,12 +8,12 @@
 ## Usage
 
 1. [Download](https://github.com/pnicto/erp2gcal/archive/refs/heads/master.zip) the repo.
-2. [Visit](https://developers.google.com/calendar/api/quickstart/python) and follow the prerequisites or read more below.
+2. [Visit](https://developers.google.com/calendar/api/quickstart/python#prerequisites) and follow the prerequisites.
    <details>
    <summary>Click to read more</summary>
 
-   1. <a href="https://console.cloud.google.com/">Visit</a> in the side bar choose APIs & Services -> Library Search for google calendar and enable it.
-   2. Now go to APIs & Services -> Credentials, Create a project and then Create Credentials -> Oauth client ID -> Desktop app as application type after creating download it as json.
+   1. <a href="https://developers.google.com/calendar/api/quickstart/python#enable_the_api/">Click here</a> and enable the API.
+   2. Now go to APIs & Services -> Credentials, Create a project and then Create Credentials -> Oauth client ID -> Desktop app as application type (Make sure you add your BITS email to test users) after creating download it as json.
    </details>
 
 3. Rename the downloaded file as `credentials.json` and place it along with the downloaded files from step 1.
