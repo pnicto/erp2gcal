@@ -55,19 +55,16 @@ class Erp2Gcal:
                     "colorId": randint(1, 11),
                     "recurrence": [
                         f"RRULE:FREQ=WEEKLY;UNTIL={until};BYDAY={','.join(course.day())}"
-                    ],  # UNTIL= , BYDAY="SU" / "MO" / "TU" / "WE" / "TH" / "FR" / "SA"
+                    ],
                 }
 
-                response = (
-                    service.events()
-                    .insert(calendarId="primary", body=event_body)
-                    .execute()
-                )
+                service.events().insert(calendarId="primary", body=event_body).execute()
+
                 print(f"{bcolors.OKGREEN}Successfully created events!{bcolors.ENDC}")
         except Exception as err:
             print(f"{bcolors.FAIL}{err}{bcolors.ENDC}")
 
-    # clean the events created as a side effect
+    # Clean the events created as a side effect on the day the script is run
     def clean_unnecessary_events(service):
         try:
             # today in the format asked in docs :p
@@ -103,11 +100,9 @@ class Erp2Gcal:
                     and "Created using erp2gcal" in event["description"]
                 ):
 
-                    response = (
-                        service.events()
-                        .delete(calendarId="primary", eventId=event["id"])
-                        .execute()
-                    )
+                    service.events().delete(
+                        calendarId="primary", eventId=event["id"]
+                    ).execute()
 
             print(f"{bcolors.OKGREEN}Removed unnecessary events!{bcolors.ENDC}")
         except Exception as err:
