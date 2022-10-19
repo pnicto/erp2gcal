@@ -15,7 +15,7 @@ from selenium.webdriver.chrome.options import Options as chrome_options
 from selenium.webdriver.firefox.service import Service as FirefoxService
 from webdriver_manager.firefox import GeckoDriverManager
 
-import cms
+from cms import CmsActions
 from course_parse import CourseParser
 from erp import ErpActions
 from erp2gcal import Erp2Gcal
@@ -59,14 +59,14 @@ if __name__ == "__main__":
     try:
         driver = select_preferred_browser()
         # CMS Login
-        cms.perform_login(driver)
+        CmsActions.perfrom_cms_login(driver)
         # Get params
         (
             security_key,
             session_key,
             user_id,
             cookie,
-        ) = cms.get_required_parameters_to_make_requests(driver)
+        ) = CmsActions.get_required_parameters_to_make_requests(driver)
         # ERP Login
         ErpActions.navigation_and_login(driver)
         erp_registered_courses = ErpActions.get_schedule(driver)
@@ -84,19 +84,19 @@ if __name__ == "__main__":
 
         if choice == 1:
             # Unenrol
-            cms.unenrol_from_all_courses(
+            CmsActions.unenrol_from_all_courses(
                 user_id=user_id,
                 session_key=session_key,
                 security_key=security_key,
                 cookie=cookie,
             )
             # Enrol
-            cms.enrol_all_registered_courses(
+            CmsActions.enrol_all_registered_courses(
                 courses=courses,
                 cookie=cookie,
                 security_key=security_key,
             )
-            cms.enrol_main_sections(
+            CmsActions.enrol_main_sections(
                 courses=courses, cookie=cookie, security_key=security_key
             )
 
@@ -113,38 +113,38 @@ if __name__ == "__main__":
 
         elif choice == 2:
             # Unenrol
-            cms.unenrol_from_all_courses(
+            CmsActions.unenrol_from_all_courses(
                 user_id=user_id,
                 session_key=session_key,
                 security_key=security_key,
                 cookie=cookie,
             )
             # Enrol
-            cms.enrol_all_registered_courses(
+            CmsActions.enrol_all_registered_courses(
                 courses=courses,
                 cookie=cookie,
                 security_key=security_key,
             )
 
-            cms.enrol_main_sections(
+            CmsActions.enrol_main_sections(
                 courses=courses, cookie=cookie, security_key=security_key
             )
 
         elif choice == 3:
             # Enrol
-            cms.enrol_all_registered_courses(
+            CmsActions.enrol_all_registered_courses(
                 courses=courses,
                 cookie=cookie,
                 security_key=security_key,
             )
 
-            cms.enrol_main_sections(
+            CmsActions.enrol_main_sections(
                 courses=courses, cookie=cookie, security_key=security_key
             )
 
         elif choice == 4:
             # Unenrol
-            cms.unenrol_from_all_courses(
+            CmsActions.unenrol_from_all_courses(
                 user_id=user_id,
                 session_key=session_key,
                 security_key=security_key,
