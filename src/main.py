@@ -32,7 +32,7 @@ def select_preferred_browser():
         input(f"\n{bcolors.HEADER}Enter your choice(1-3):{bcolors.ENDC}\n")
     )
     if browser_choice == 1:
-        # Welp I tried turning the webdriver messages off let's see how well it does
+        # I tried turning the webdriver messages off let's see how well it does
         options = edge_options()
         options.add_argument("--log-level=OFF")
         options.add_experimental_option("excludeSwitches", ["enable-automation"])
@@ -59,7 +59,7 @@ if __name__ == "__main__":
     try:
         driver = select_preferred_browser()
         # CMS Login
-        CmsActions.perfrom_cms_login(driver)
+        CmsActions.perform_cms_login(driver)
         # Get params
         (
             security_key,
@@ -68,7 +68,7 @@ if __name__ == "__main__":
             cookie,
         ) = CmsActions.get_required_parameters_to_make_requests(driver)
         # ERP Login
-        ErpActions.navigation_and_login(driver)
+        ErpActions.perform_login(driver)
         erp_registered_courses = ErpActions.get_schedule(driver)
         # Create "Course" class instances
         courses = CourseParser.course_instance_generator(erp_registered_courses)
@@ -101,7 +101,7 @@ if __name__ == "__main__":
             )
 
             # Calendar events
-            # Google calenda auth
+            # Google calendar auth
             gcal_service = Erp2Gcal.perform_google_auth()
             # Creating events
             Erp2Gcal.create_gcal_events(
@@ -153,7 +153,7 @@ if __name__ == "__main__":
 
         elif choice == 5:
             # Calendar events
-            # Google calenda auth
+            # Google calendar auth
             gcal_service = Erp2Gcal.perform_google_auth()
             # Creating events
             Erp2Gcal.create_gcal_events(
