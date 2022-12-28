@@ -6,12 +6,14 @@ from utils.bcolors import bcolors
 
 
 class ErpActions:
-    def perform_login(driver):
+    # Function which goes to login page
+    def navigation_and_login(driver):
         # Goes to this specific url which is the Student Center Section of ERP
         try:
             driver.get(
                 "https://sis.erp.bits-pilani.ac.in/psc/sisprd/EMPLOYEE/SA/c/SA_LEARNER_SERVICES.SSS_STUDENT_CENTER.GBL?NavColl=true&ICAGTarget=start"
             )
+
             WebDriverWait(driver, 100).until(
                 EC.presence_of_element_located((By.CLASS_NAME, "PATRANSACTIONTITLE"))
             )
@@ -25,7 +27,7 @@ class ErpActions:
                 "return document.querySelector('.PSLEVEL1GRIDWBO')"
             )
             rawTableData = schedule.text
-            # Removes the 2 unnecessary items after splitting and returns it as a list
+            # Removes the 2 unecessary items after splitting and returns it as a list
             return rawTableData.split("\n")[2:]
         except Exception as err:
             print(f"{bcolors.FAIL}{err}{bcolors.ENDC}")
