@@ -16,10 +16,21 @@ from selenium.webdriver.firefox.service import Service as FirefoxService
 from webdriver_manager.firefox import GeckoDriverManager
 
 import cms
-from course_parse import CourseParser
+import courseParse
+import erp2gcal
 from erp import ErpActions
-from erp2gcal import Erp2Gcal
-from utils import bcolors
+
+# Colors for terminal output
+class bcolors:
+    HEADER = "\033[95m"
+    OKBLUE = "\033[94m"
+    OKCYAN = "\033[96m"
+    OKGREEN = "\033[92m"
+    WARNING = "\033[93m"
+    FAIL = "\033[91m"
+    ENDC = "\033[0m"
+    BOLD = "\033[1m"
+    UNDERLINE = "\033[4m"
 
 
 def select_preferred_browser():
@@ -71,7 +82,7 @@ if __name__ == "__main__":
         ErpActions.navigation_and_login(driver)
         erp_registered_courses = ErpActions.get_schedule(driver)
         # Create "Course" class instances
-        courses = CourseParser.course_instance_generator(erp_registered_courses)
+        courses = courseParse.coursesGen(erp_registered_courses)
         driver.quit()
 
         print(
@@ -102,14 +113,14 @@ if __name__ == "__main__":
 
             # Calendar events
             # Google calenda auth
-            gcal_service = Erp2Gcal.perform_google_auth()
+            gcal_service = erp2gcal.google_auth()
             # Creating events
-            Erp2Gcal.create_gcal_events(
+            erp2gcal.create_gcal_events(
                 courses=courses,
                 service=gcal_service,
             )
             # Remove the side effect
-            Erp2Gcal.clean_the_unnecessary_events(service=gcal_service)
+            erp2gcal.clean_the_unnecessary_events(service=gcal_service)
 
         elif choice == 2:
             # Unenrol
@@ -154,14 +165,14 @@ if __name__ == "__main__":
         elif choice == 5:
             # Calendar events
             # Google calenda auth
-            gcal_service = Erp2Gcal.perform_google_auth()
+            gcal_service = erp2gcal.google_auth()
             # Creating events
-            Erp2Gcal.create_gcal_events(
+            erp2gcal.create_gcal_events(
                 courses=courses,
                 service=gcal_service,
             )
             # Remove the side effect
-            Erp2Gcal.clean_the_unnecessary_events(service=gcal_service)
+            erp2gcal.clean_the_unnecessary_events(service=gcal_service)
 
     except Exception as err:
         print(f"{bcolors.FAIL}{err}{bcolors.ENDC}")
