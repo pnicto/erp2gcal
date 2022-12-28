@@ -17,8 +17,8 @@ from webdriver_manager.firefox import GeckoDriverManager
 
 import cms
 import courseParse
+import erp
 import erp2gcal
-from erp import ErpActions
 
 # Colors for terminal output
 class bcolors:
@@ -79,8 +79,8 @@ if __name__ == "__main__":
             cookie,
         ) = cms.get_required_parameters_to_make_requests(driver)
         # ERP Login
-        ErpActions.navigation_and_login(driver)
-        erp_registered_courses = ErpActions.get_schedule(driver)
+        erp.navigation_and_login(driver)
+        erp_registered_courses = erp.get_schedule(driver)
         # Create "Course" class instances
         courses = courseParse.coursesGen(erp_registered_courses)
         driver.quit()
