@@ -19,7 +19,7 @@ from cms import CmsActions
 from course_parse import CourseParser
 from erp import ErpActions
 from erp2gcal import Erp2Gcal
-from utils.bcolors import bcolors
+from utils import bcolors
 
 
 def select_preferred_browser():
