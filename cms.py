@@ -5,7 +5,7 @@ import requests
 # Selenium imports
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support.wait import WebDriverWait
 
 # Colors for terminal output
 class bcolors:
@@ -44,12 +44,18 @@ def get_required_parameters_to_make_requests(driver):
         WebDriverWait(driver, 15).until(
             EC.presence_of_element_located((By.LINK_TEXT, "Security keys"))
         )
-        driver.find_element(By.LINK_TEXT, "Security keys").click()
+
+        # Getting session key from logout button
+        logout_btn = driver.find_element(By.LINK_TEXT, "Log out")
+        session_key = logout_btn.get_dom_attribute("href").split("=")[1]
+
+        # Getting security key
+        driver.get(
+            f"https://cms.bits-hyderabad.ac.in/user/managetoken.php?sesskey={session_key}")
         WebDriverWait(driver, 15).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, ".cell.c0"))
         )
         security_key = driver.find_element(By.CSS_SELECTOR, ".cell.c0").text
-        session_key = driver.current_url.split("=")[1]
 
         # Since firefox was having issue clicking that context menu this is a workaround for that
         driver.get("https://cms.bits-hyderabad.ac.in/user/preferences.php")
