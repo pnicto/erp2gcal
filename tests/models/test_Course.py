@@ -51,3 +51,7 @@ class TestCourse:
     def test_parse_end_timings(self, component, expected):
         course = Course("", component, "", "MoWeFr", "5:00PM")
         assert course.end == expected
+
+    def test_raise_error_when_time_is_missing(self):
+        with pytest.raises(ValueError):
+            Course("", "LEC", "", "MoWeFr", "")
