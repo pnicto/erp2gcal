@@ -39,3 +39,15 @@ class TestCourse:
     def test_parse_start_timings(self, time, expected):
         course = Course("", "LEC", "", "MoWeFr", time)
         assert course.start == expected
+
+    @pytest.mark.parametrize(
+        "component,expected",
+        [
+            ("LAB", create_date_time_isoformat_from_hour(19)),
+            ("LEC", create_date_time_isoformat_from_hour(18)),
+            ("TUT", create_date_time_isoformat_from_hour(18)),
+        ],
+    )
+    def test_parse_end_timings(self, component, expected):
+        course = Course("", component, "", "MoWeFr", "5:00PM")
+        assert course.end == expected
