@@ -13,3 +13,7 @@ class TestCourse:
     def test_parse_days(self, days, expected):
         course = Course("", "LEC", "", days, "2:00PM")
         assert course.days == expected
+
+    def test_raise_error_when_day_is_missing(self):
+        with pytest.raises(ValueError):
+            Course("", "LEC", "", "", "2:00PM")
