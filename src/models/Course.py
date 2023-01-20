@@ -7,5 +7,9 @@ class Course:
         self.start = start
 
     def __parse_days(self, days_str):
+        if not days_str:
+            raise ValueError("days_str cannot be empty")
+
         days = [days_str[i : i + 2].upper() for i in range(0, len(days_str), 2)]
+
         return days
