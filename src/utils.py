@@ -3,6 +3,7 @@ import re
 
 from clint.textui import colored
 from selenium import webdriver
+from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.edge.service import Service as EdgeService
 from selenium.webdriver.firefox.service import Service as FirefoxService
@@ -10,7 +11,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
 
-from models.Course import Course
+from .models.Course import Course
 
 os.environ["WDM_LOCAL"] = "1"
 
@@ -42,7 +43,15 @@ def initialize_driver_for_preferred_browser():
             raise ValueError("Invalid choice")
         return driver
     except ValueError:
-        print(colored.red("Entered invalid number"))
+        print(colored.red("Enter a valid choice"))
+    except WebDriverException as err:
+        print(colored.red(err.msg))
+    except Exception:
+        print(
+            colored.red(
+                "Please connect to internet to proceed. Need to download required webdriver"
+            )
+        )
 
 
 def parse_string_to_courses(registered_course_str):
