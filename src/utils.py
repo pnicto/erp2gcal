@@ -18,7 +18,7 @@ os.environ["WDM_LOCAL"] = "1"
 BROWSER_CHOICES = ["Chrome", "Firefox", "Edge"]
 
 
-def initiate_driver_for_preferred_browser():
+def initialize_driver_for_preferred_browser():
     print(colored.blue("Choose an installed browser among the list\n"))
 
     for idx, browser in enumerate(BROWSER_CHOICES):
