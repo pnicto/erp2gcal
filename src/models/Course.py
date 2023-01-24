@@ -51,3 +51,15 @@ class Course:
             hour = 0
 
         return hour
+
+    def __eq__(self, course):
+        if (
+            self.name == course.name
+            and self.room == course.room
+            and self.days == course.days
+            and self.start == course.start
+            and self.end == course.end
+        ):
+            return True
+
+        return False
