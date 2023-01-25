@@ -27,9 +27,9 @@ class CmsActions:
             enrol_instance = requests.get(
                 f"https://cms.bits-hyderabad.ac.in/webservice/rest/server.php?wsfunction=core_enrol_get_course_enrolment_methods&moodlewsrestformat=json&wstoken={self.security_key}&courseid={course['id']}"
             ).json()
-            enrolId = enrol_instance[0]["id"]
+            course_id = enrol_instance[0]["id"]
             requests.get(
-                f"https://cms.bits-hyderabad.ac.in/enrol/self/unenrolself.php?confirm=1&enrolid={enrolId}&sesskey={self.session_key}",
+                f"https://cms.bits-hyderabad.ac.in/enrol/self/unenrolself.php?confirm=1&enrolid={course_id}&sesskey={self.session_key}",
                 cookies=self.cookie,
             )
             print(colored.green("Ok\n"))
@@ -54,7 +54,7 @@ class CmsActions:
             )
         )
 
-        choice = input(">")
+        choice = input("> ")
 
         return (choice, search_result)
 
@@ -67,6 +67,7 @@ class CmsActions:
             f"https://cms.bits-hyderabad.ac.in/webservice/rest/server.php?wsfunction=enrol_self_enrol_user&moodlewsrestformat=json&wstoken={self.security_key}&courseid={course['id']}",
             cookies=self.cookie,
         ).json()
+
         if enrol_response["status"]:
             print(
                 colored.green(
@@ -74,7 +75,7 @@ class CmsActions:
                 )
             )
         else:
-            print(colored.red(f"Enrolment in course {course['fullname']} failed"))
+            print(colored.red(f"Enrolment in course {course['fullname']} failed\n"))
 
     def enrol_into_registered_courses(self, registered_courses):
         print(
@@ -84,7 +85,7 @@ class CmsActions:
         )
 
         for course in registered_courses:
-            print(colored.cyan(f"Searching for {course.name} in courses"))
+            print(colored.cyan(f"\nSearching for {course.name} in courses"))
 
             search_term = " ".join(course.name.split("-"))
 
