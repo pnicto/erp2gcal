@@ -1,7 +1,6 @@
 import datetime as dt
-
-from models.Course import Course
-from utils import parse_string_to_courses
+from src.models.Course import Course
+from src.utils import parse_string_to_courses
 
 SCHEDULE = "This Week's Schedule\n  Class Schedule\nECON F212-L1\nLEC (2740)\nTuTh 6:00PM - 7:30PM\nRoom  TBA\nEEE F241-L2\nLEC (2786)\nTuThSa 11:00AM - 11:50AM\nRoom  TBA\nEEE F241-P2\nLAB (2795)\nMo 1:00PM - 2:50PM\nRoom  TBA\nEEE F241-T3\nTUT (2806)\nTu 3:00PM - 3:50PM\nRoom  TBA\nEEE F242-L1\nLEC (2813)\nTuTh 4:00PM - 4:50PM\nRoom  TBA\nFr 5:00PM - 5:50PM\nRoom  TBA\nEEE F242-T5\nTUT (2819)\nTh 8:00AM - 8:50AM\nRoom  TBA\nEEE F243-L1\nLEC (2821)\nMoWeFr 10:00AM - 10:50AM\nRoom  TBA\nEEE F243-T2\nTUT (2824)\nSa 8:00AM - 8:50AM\nRoom  TBA\nEEE F244-L1\nLEC (2829)\nMoWeFr 9:00AM - 9:50AM\nRoom  TBA\nEEE F244-T3\nTUT (2832)\nTu 8:00AM - 8:50AM\nRoom  TBA\nEEE F246-P1\nLAB (3342)\nTuTh 1:00PM - 2:50PM\nRoom  TBA\nHSS F338-L1\nLEC (3233)\nMoWeFr 11:00AM - 11:50AM\nRoom  TBA\nMGTS F211-L1\nLEC (2711)\nMoWe 5:00PM - 5:50PM\nRoom  TBA\nTh 5:00PM - 5:50PM\nRoom  TBA\nMGTS F211-T1\nTUT (2712)\nTu 5:00PM - 5:50PM\nRoom  TBA"
 

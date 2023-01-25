@@ -2,7 +2,7 @@ import datetime as dt
 
 import pytest
 
-from models.Course import Course
+from src.models.Course import Course
 
 
 def create_date_time_isoformat_from_hour(hour):
