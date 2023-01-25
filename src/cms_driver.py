@@ -7,7 +7,7 @@ class CmsDriver:
     def __init__(self, driver) -> None:
         self.driver = driver
 
-    def __perform_login(self):
+    def __navigate_to_login_page(self):
         self.driver.get("https://cms.bits-hyderabad.ac.in/login/index.php")
         login_button = WebDriverWait(self.driver, 100).until(
             EC.presence_of_element_located((By.LINK_TEXT, "Google"))
@@ -47,7 +47,7 @@ class CmsDriver:
         return user_id
 
     def get_required_parameters_for_cms_api(self):
-        self.__perform_login()
+        self.__navigate_to_login_page()
         session_key = self.__get_session_key()
         security_key = self.__get_security_key(session_key)
         user_id = self.__get_user_id()
