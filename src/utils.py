@@ -16,40 +16,30 @@ from .models.Course import Course
 os.environ["WDM_LOCAL"] = "1"
 
 
-BROWSER_CHOICES = ["Chrome", "Firefox", "Edge"]
-
-
-def initialize_driver_for_preferred_browser():
-    print(colored.blue("Choose an installed browser among the list\n"))
-
-    for idx, browser in enumerate(BROWSER_CHOICES):
-        print(colored.magenta(f"{idx+1}. { browser }"))
+def initialize_driver_for_preferred_browser(browser_arg):
 
     try:
-        choice = int(input())
-        if choice == 1:
+        if browser_arg == "chrome":
             driver = webdriver.Chrome(
                 service=ChromeService(ChromeDriverManager().install())
             )
-        elif choice == 2:
+        elif browser_arg == "firefox":
             driver = webdriver.Firefox(
                 service=FirefoxService(GeckoDriverManager().install())
             )
-        elif choice == 3:
+        elif browser_arg == "edge":
             driver = webdriver.Edge(
                 service=EdgeService(EdgeChromiumDriverManager().install())
             )
         else:
             raise ValueError("Invalid choice")
         return driver
-    except ValueError:
-        print(colored.red("Enter a valid choice"))
     except WebDriverException as err:
         print(colored.red(err.msg))
     except Exception:
         print(
             colored.red(
-                "Please connect to internet to proceed. Need to download required webdriver"
+                "Please connect to internet to proceed. Need to download the required webdriver."
             )
         )
 
