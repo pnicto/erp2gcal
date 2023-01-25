@@ -111,16 +111,17 @@ class GoogleCalendarActions:
         )
 
         events = event_list.get("items", [])
-        for event in events:
-            if (
-                "description" in event
-                and "Created using erp2gcal" in event["description"]
-            ):
-                response = (
-                    self.service.events()
-                    .delete(calendarId="primary", eventId=event["id"])
-                    .execute()
-                )
-                print(response)
+
+        with progress.Bar(label="Clearing", expected_size=len(events)) as bar:
+            for idx, event in enumerate(events):
+                if (
+                    "description" in event
+                    and "Created using erp2gcal" in event["description"]
+                ):
+                    self.service.events().delete(
+                        calendarId="primary", eventId=event["id"]
+                    ).execute()
+
+                    bar.show(idx)
 
         print(colored.green("Cleared"))
