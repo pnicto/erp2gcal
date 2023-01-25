@@ -17,10 +17,10 @@ def main(actions="abc", browser="firefox"):
 
     :param actions: Actions to perform. Refer below for the acceptable values eg: ac
 
-        a= Unenrol from all courses\n
-        b= Enrol into registered courses on cms\n
-        c= Create gcal events\n
-        d= Delete created gcal events
+        a : Unenrol from all courses\n
+        b : Enrol into registered courses on cms\n
+        c : Create gcal events\n
+        d : Delete created gcal events
 
     For more information visit https://github.com/pnicto/erp2gcal
     """
