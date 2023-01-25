@@ -2,13 +2,13 @@ import datetime as dt
 import os.path
 from random import randint
 
-from clint.textui import colored
+from clint.textui import colored, progress
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 
-SCOPES = ["https://www.googleapis.com/auth/calendar.readonly"]
+SCOPES = ["https://www.googleapis.com/auth/calendar"]
 
 
 class GoogleCalendarActions:
@@ -42,6 +42,7 @@ class GoogleCalendarActions:
                 bold=True,
             )
         )
+
         until_date = input()
         until_date = "".join(until_date.split("/")) + "T000000Z"
 
@@ -58,7 +59,7 @@ class GoogleCalendarActions:
                 },
                 "colorId": randint(1, 11),
                 "recurrence": [
-                    f"RRULE:FREQ=WEEKLY;UNTIL={until_date};BYDAY={','.join(course.day())}"
+                    f"RRULE:FREQ=WEEKLY;UNTIL={until_date};BYDAY={','.join(course.days)}"
                 ],
             }
 
@@ -67,9 +68,9 @@ class GoogleCalendarActions:
                 .insert(calendarId="primary", body=event_body)
                 .execute()
             )
-            print(response)
 
-        print(colored.green("Created"))
+            if response["id"]:
+                print(colored.green(f"Created event for {course.name}"))
 
         self.delete_all_created_events(clean_up=True)
 
