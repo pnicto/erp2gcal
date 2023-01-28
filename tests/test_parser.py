@@ -64,6 +64,9 @@ SCHEDULE = [
     "TUT (2712)",
     "Tu 5:00PM - 5:50PM",
     "Room  TBA",
+    "CS F367-P1",
+    "PRO (3352)",
+    "Room  TBA",
 ]
 
 
