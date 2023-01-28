@@ -44,9 +44,29 @@ def initialize_driver_for_preferred_browser(browser_arg):
         )
 
 
-def parse_string_to_courses(registered_course_str):
-    registered_course_str_list = registered_course_str.split("\n")[2:]
+def __remove_project_courses(registered_course_str_list):
+    processed_courses = []
+
+    for idx in range(0, len(registered_course_str_list), 4):
+        if idx == len(registered_course_str_list):
+            break
+
+        component = registered_course_str_list[idx + 1].split()[0]
+
+        if component == "PRO":
+            continue
+
+        processed_courses.append(registered_course_str_list[idx])
+        processed_courses.append(registered_course_str_list[idx + 1])
+        processed_courses.append(registered_course_str_list[idx + 2])
+        processed_courses.append(registered_course_str_list[idx + 3])
+
+    return processed_courses
+
+
+def parse_string_to_courses(registered_course_str_list):
     parsed_courses = []
+    registered_course_str_list = __remove_project_courses(registered_course_str_list)
 
     for idx in range(0, len(registered_course_str_list), 4):
         if idx == len(registered_course_str_list):
