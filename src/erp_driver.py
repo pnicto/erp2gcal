@@ -29,8 +29,7 @@ class ErpDriver:
             schedule_element = self.driver.execute_script(
                 "return document.querySelector('.PSLEVEL1GRIDWBO')"
             )
-            schedule = schedule_element.text.spliy("\n")[2:]
-
+            schedule = schedule_element.text.split("\n")[2:]
             courses = parse_string_to_courses(schedule)
 
             return courses
