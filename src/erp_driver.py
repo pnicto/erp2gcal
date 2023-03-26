@@ -1,3 +1,5 @@
+import logging
+
 from clint.textui import colored
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
@@ -31,6 +33,16 @@ class ErpDriver:
             )
             schedule = schedule_element.text.split("\n")[2:]
             courses = parse_string_to_courses(schedule)
+
+            logging.info("ERP_GET_COURSES_FROM_STUDENT_CENTER")
+            logging.info("schedule_element")
+            logging.info(schedule_element.text)
+            logging.info("schedule")
+            logging.info(schedule)
+            logging.info(len(schedule))
+            logging.info("courses")
+            logging.info(courses)
+            logging.info(len(courses))
 
             return courses
         except Exception as err:

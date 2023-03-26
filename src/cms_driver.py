@@ -1,3 +1,5 @@
+import logging
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
@@ -54,5 +56,10 @@ class CmsDriver:
 
         moodle_session = self.driver.get_cookie("MoodleSession")["value"]
         cookie = {"MoodleSession": moodle_session}
+
+        logging.info("CMS_DRIVER_PARAMETERS")
+        logging.info(len(session_key))
+        logging.info(len(user_id))
+        logging.info(len(security_key))
 
         return (session_key, security_key, user_id, cookie)

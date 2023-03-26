@@ -1,3 +1,5 @@
+import logging
+
 from clize import run
 
 from src.cms_actions import CmsActions
@@ -24,6 +26,8 @@ def main(actions="abc", browser="firefox"):
 
     For more information visit https://github.com/pnicto/erp2gcal
     """
+
+    logging.basicConfig(filename="debug.log", encoding="utf-8", level=logging.INFO)
 
     driver = initialize_driver_for_preferred_browser(browser)
 
