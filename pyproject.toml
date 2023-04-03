@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "erp2gcal"
-version = "0.1.0"
+version = "1.0.0"
 description = "A python script with selenium which can create google calendar events for your timetable and also perform batch enrol/unenrol courses on cms."
 authors = ["pnicto <ydkr789@gmail.com>"]
 license = "LICENSE"
@@ -21,6 +21,7 @@ clize = "^5.0.0"
 black = "^22.12.0"
 pytest = "^7.2.1"
 pytest-cov = "^4.0.0"
+pyclean = "^2.7.0"
 
 [build-system]
 requires = ["poetry-core"]
