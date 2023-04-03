@@ -122,6 +122,6 @@ class GoogleCalendarActions:
                         calendarId="primary", eventId=event["id"]
                     ).execute()
 
-                    bar.show(idx)
+                    bar.show(idx + 1)
 
         print(colored.green("Cleared"))
