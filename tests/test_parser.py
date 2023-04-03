@@ -4,7 +4,7 @@ from src.models.Course import Course
 from src.utils import parse_string_to_courses
 
 SCHEDULE = [
-    "ECON F212-L1",
+    "ECON F212-L13",
     "LEC (2740)",
     "TuTh 6:00PM - 7:30PM",
     "Room  TBA",
@@ -67,6 +67,12 @@ SCHEDULE = [
     "CS F367-P1",
     "PRO (3352)",
     "Room  TBA",
+    "EEE F243-L1",
+    "LEC (2821)",
+    "WeFr 10:00AM - 10:50AM",
+    "Room  TBA",
+    "Mo 10:00AM - 10:50AM",
+    "Room  TBA",
 ]
 
 
@@ -76,7 +82,7 @@ def create_date_time_isoformat_from_hour(hour):
 
 
 EXPECTED = [
-    Course("ECON F212-L1", "LEC", "TBA", "TuTh", "6:00PM"),
+    Course("ECON F212-L13", "LEC", "TBA", "TuTh", "6:00PM"),
     Course("EEE F241-L2", "LEC", "TBA", "TuThSa", "11:00AM"),
     Course("EEE F241-P2", "LAB", "TBA", "Mo", "1:00PM"),
     Course("EEE F241-T3", "TUT", "TBA", "Tu", "3:00PM"),
@@ -92,6 +98,8 @@ EXPECTED = [
     Course("MGTS F211-L1", "LEC", "TBA", "MoWe", "5:00PM"),
     Course("MGTS F211-L1", "LEC", "TBA", "Th", "5:00PM"),
     Course("MGTS F211-T1", "TUT", "TBA", "Tu", "5:00PM"),
+    Course("EEE F243-L1", "LEC", "TBA", "WeFr", "10:00AM"),
+    Course("EEE F243-L1", "LEC", "TBA", "Mo", "10:00AM"),
 ]
 
 
