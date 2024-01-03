@@ -1,5 +1,6 @@
 import os
 import re
+from typing import List
 
 from clint.textui import colored
 from selenium import webdriver
@@ -43,60 +44,42 @@ def initialize_driver_for_preferred_browser(browser_arg):
         )
 
 
-def parse_string_to_courses(registered_course_str_list):
+# TODO: It seems redundant to convert the list back to string when it is actually a string in the first place
+def parse_string_to_courses(registered_course_str_list) -> List[Course]:
     parsed_courses = []
     normal_class_pattern = r"[A-Z]{2,4}\s[FG]\d{3}-[LPT]\d+\n[A-Z]{3}\s\(\d{4}\)\n(Mo|Tu|We|Th|Fr|Sa|Su)+\s\b\d{1,2}:\d{2}[AP]M\s-\s\d{1,2}:\d{2}[AP]M\b\nRoom\s+TBA"
     split_class_pattern = r"[A-Z]{2,4}\s[FG]\d{3}-[LPT]\d+\n[A-Z]{3}\s\(\d{4}\)\n(Mo|Tu|We|Th|Fr|Sa|Su)+\s\b\d{1,2}:\d{2}[AP]M\s-\s\d{1,2}:\d{2}[AP]M\b\nRoom\s+TBA\n(Mo|Tu|We|Th|Fr|Sa|Su)+\s\b\d{1,2}:\d{2}[AP]M\s-\s\d{1,2}:\d{2}[AP]M\b\nRoom\s+TBA"
 
-    for idx in range(len(registered_course_str_list)):
-        if idx + 4 >= len(registered_course_str_list):
-            break
+    # just genius
+    registered_course_str = "\n".join(registered_course_str_list)
 
-        normal_class_str_to_match = "\n".join(
-            [
-                registered_course_str_list[idx],
-                registered_course_str_list[idx + 1],
-                registered_course_str_list[idx + 2],
-                registered_course_str_list[idx + 3],
-            ]
+    normal_courses_iter = re.finditer(normal_class_pattern, registered_course_str)
+    split_courses_iter = re.finditer(split_class_pattern, registered_course_str)
+
+    for normal_course_match in normal_courses_iter:
+        normal_course_str = normal_course_match.group()
+        normal_course_split = normal_course_str.split("\n")
+
+        parsed_course = Course(
+            normal_course_split[0],
+            normal_course_split[1].split()[0],
+            normal_course_split[3].split()[1],
+            normal_course_split[2].split()[0],
+            normal_course_split[2].split()[1],
         )
+        parsed_courses.append(parsed_course)
 
-        normal_class_match = re.match(normal_class_pattern, normal_class_str_to_match)
+    for split_course_match in split_courses_iter:
+        split_course_str = split_course_match.group()
+        split_course_split = split_course_str.split("\n")
 
-        if normal_class_match:
-            parsed_course = Course(
-                registered_course_str_list[idx],
-                registered_course_str_list[idx + 1].split()[0],
-                registered_course_str_list[idx + 3].split()[1],
-                registered_course_str_list[idx + 2].split()[0],
-                registered_course_str_list[idx + 2].split()[1],
-            )
-            parsed_courses.append(parsed_course)
-
-            if idx + 5 >= len(registered_course_str_list):
-                break
-
-            split_class_str_to_match = "\n".join(
-                [
-                    registered_course_str_list[idx],
-                    registered_course_str_list[idx + 1],
-                    registered_course_str_list[idx + 2],
-                    registered_course_str_list[idx + 3],
-                    registered_course_str_list[idx + 4],
-                    registered_course_str_list[idx + 5],
-                ]
-            )
-
-            split_class_match = re.match(split_class_pattern, split_class_str_to_match)
-
-            if split_class_match:
-                parsed_course = Course(
-                    registered_course_str_list[idx],
-                    registered_course_str_list[idx + 1].split()[0],
-                    registered_course_str_list[idx + 5].split()[1],
-                    registered_course_str_list[idx + 4].split()[0],
-                    registered_course_str_list[idx + 4].split()[1],
-                )
-                parsed_courses.append(parsed_course)
+        parsed_split_course = Course(
+            split_course_split[0],
+            split_course_split[1].split()[0],
+            split_course_split[5].split()[1],
+            split_course_split[4].split()[0],
+            split_course_split[4].split()[1],
+        )
+        parsed_courses.append(parsed_split_course)
 
     return parsed_courses
