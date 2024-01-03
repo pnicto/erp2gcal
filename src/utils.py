@@ -5,9 +5,12 @@ from typing import List
 from clint.textui import colored
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
+from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.edge.options import Options as EdgeOptions
 from selenium.webdriver.edge.service import Service as EdgeService
 from selenium.webdriver.firefox.service import Service as FirefoxService
+from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
@@ -17,19 +20,31 @@ from .models.Course import Course
 os.environ["WDM_LOCAL"] = "1"
 
 
-def initialize_driver_for_preferred_browser(browser_arg):
+def initialize_driver_for_preferred_browser(browser_arg, binary_location):
     try:
         if browser_arg == "chrome":
+            chrome_options = ChromeOptions()
+            if binary_location:
+                chrome_options.binary_location = binary_location
             driver = webdriver.Chrome(
-                service=ChromeService(ChromeDriverManager().install())
+                service=ChromeService(ChromeDriverManager().install()),
+                options=chrome_options,
             )
         elif browser_arg == "firefox":
+            firefox_options = FirefoxOptions()
+            if binary_location:
+                firefox_options.binary_location = binary_location
             driver = webdriver.Firefox(
-                service=FirefoxService(GeckoDriverManager().install())
+                service=FirefoxService(GeckoDriverManager().install()),
+                options=firefox_options,
             )
         elif browser_arg == "edge":
+            edge_options = EdgeOptions()
+            if binary_location:
+                edge_options.binary_location = binary_location
             driver = webdriver.Edge(
-                service=EdgeService(EdgeChromiumDriverManager().install())
+                service=EdgeService(EdgeChromiumDriverManager().install()),
+                options=edge_options,
             )
         else:
             raise ValueError("Invalid choice")

@@ -7,7 +7,7 @@ from src.gcal_actions import GoogleCalendarActions
 from src.utils import initialize_driver_for_preferred_browser
 
 
-def main(actions="abc", browser="firefox"):
+def main(actions="abc", browser="firefox", *, binary_location=None):
     """
     Erp2gcal is a program to create google calendar events for your registered courses along with some functionality for cms.
 
@@ -22,10 +22,11 @@ def main(actions="abc", browser="firefox"):
         c : Create gcal events\n
         d : Delete created gcal events
 
+    :param binary_location: Path to browser's binary
     For more information visit https://github.com/pnicto/erp2gcal
     """
 
-    driver = initialize_driver_for_preferred_browser(browser)
+    driver = initialize_driver_for_preferred_browser(browser, binary_location)
 
     registered_courses = None
     cms_actions = None
