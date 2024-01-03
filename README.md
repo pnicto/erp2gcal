@@ -50,6 +50,9 @@ d : Delete created gcal events
 
 Acceptable browser params are 'edge', 'firefox', 'chrome'
 
+Options:
+  --binary-location=STR   Path to browser's binary
+
 Other actions:
   -h, --help   Show the help
 ```
@@ -57,4 +60,5 @@ Other actions:
 ```bash
 python main.py abc firefox # Refer above for what 'abc' mean
 python main.py bc chrome
+python main.py --binary-location=/usr/bin/microsoft-edge-dev abc edge
 ```
