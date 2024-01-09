@@ -51,7 +51,7 @@ class GoogleCalendarActions:
         for course in registered_courses:
             event_body = {
                 "summary": course.name,
-                "description": f"{course.room}\nCreated using erp2gcal",
+                "description": "Created using erp2gcal",
                 "start": {"dateTime": course.start, "timeZone": "Asia/Kolkata"},
                 "end": {
                     "dateTime": course.end,

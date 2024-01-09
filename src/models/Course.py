@@ -8,10 +8,9 @@ COMPONENT_DURATION_TIMEDELTAS = {
 
 
 class Course:
-    def __init__(self, name, component, room, days, start):
+    def __init__(self, name, component, days, start):
         self.name = name
         self.component = component
-        self.room = room
         self.days = self.__parse_days(days)
         self.start, self.end = self.__generate_start_and_end_timings_isoformat(start)
 
@@ -55,7 +54,6 @@ class Course:
     def __eq__(self, course):
         if (
             self.name == course.name
-            and self.room == course.room
             and self.days == course.days
             and self.start == course.start
             and self.end == course.end

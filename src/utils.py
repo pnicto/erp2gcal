@@ -62,8 +62,10 @@ def initialize_driver_for_preferred_browser(browser_arg, binary_location):
 # TODO: It seems redundant to convert the list back to string when it is actually a string in the first place
 def parse_string_to_courses(registered_course_str_list) -> List[Course]:
     parsed_courses = []
-    normal_class_pattern = r"[A-Z]{2,4}\s[FG]\d{3}-[LPT]\d+\n[A-Z]{3}\s\(\d{4}\)\n(Mo|Tu|We|Th|Fr|Sa|Su)+\s\b\d{1,2}:\d{2}[AP]M\s-\s\d{1,2}:\d{2}[AP]M\b\nRoom\s+TBA"
-    split_class_pattern = r"[A-Z]{2,4}\s[FG]\d{3}-[LPT]\d+\n[A-Z]{3}\s\(\d{4}\)\n(Mo|Tu|We|Th|Fr|Sa|Su)+\s\b\d{1,2}:\d{2}[AP]M\s-\s\d{1,2}:\d{2}[AP]M\b\nRoom\s+TBA\n(Mo|Tu|We|Th|Fr|Sa|Su)+\s\b\d{1,2}:\d{2}[AP]M\s-\s\d{1,2}:\d{2}[AP]M\b\nRoom\s+TBA"
+    # normal_class_pattern = r"[A-Z]{2,4}\s[FG]\d{3}-[LPT]\d+\n[A-Z]{3}\s\(\d{4}\)\n(Mo|Tu|We|Th|Fr|Sa|Su)+\s\b\d{1,2}:\d{2}[AP]M\s-\s\d{1,2}:\d{2}[AP]M\b\nRoom\s+TBA"
+    normal_class_pattern = r"[A-Z]{2,4}\s[FG]\d{3}-[LPT]\d+\n[A-Z]{3}\s\(\d{4}\)\n(Mo|Tu|We|Th|Fr|Sa|Su)+\s\b\d{1,2}:\d{2}[AP]M\s-\s\d{1,2}:\d{2}[AP]M\b\n\w+\s+\w+"
+    # split_class_pattern = r"[A-Z]{2,4}\s[FG]\d{3}-[LPT]\d+\n[A-Z]{3}\s\(\d{4}\)\n(Mo|Tu|We|Th|Fr|Sa|Su)+\s\b\d{1,2}:\d{2}[AP]M\s-\s\d{1,2}:\d{2}[AP]M\b\nRoom\s+TBA\n(Mo|Tu|We|Th|Fr|Sa|Su)+\s\b\d{1,2}:\d{2}[AP]M\s-\s\d{1,2}:\d{2}[AP]M\b\nRoom\s+TBA"
+    split_class_pattern = r"[A-Z]{2,4}\s[FG]\d{3}-[LPT]\d+\n[A-Z]{3}\s\(\d{4}\)\n(Mo|Tu|We|Th|Fr|Sa|Su)+\s\b\d{1,2}:\d{2}[AP]M\s-\s\d{1,2}:\d{2}[AP]M\b\n\w+\s+\w+\n(Mo|Tu|We|Th|Fr|Sa|Su)+\s\b\d{1,2}:\d{2}[AP]M\s-\s\d{1,2}:\d{2}[AP]M\b\n\w+\s+\w+"
 
     # just genius
     registered_course_str = "\n".join(registered_course_str_list)
@@ -78,7 +80,6 @@ def parse_string_to_courses(registered_course_str_list) -> List[Course]:
         parsed_course = Course(
             normal_course_split[0],
             normal_course_split[1].split()[0],
-            normal_course_split[3].split()[1],
             normal_course_split[2].split()[0],
             normal_course_split[2].split()[1],
         )
@@ -91,7 +92,6 @@ def parse_string_to_courses(registered_course_str_list) -> List[Course]:
         parsed_split_course = Course(
             split_course_split[0],
             split_course_split[1].split()[0],
-            split_course_split[5].split()[1],
             split_course_split[4].split()[0],
             split_course_split[4].split()[1],
         )
