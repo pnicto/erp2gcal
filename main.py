@@ -1,4 +1,5 @@
 from clize import run
+from clint.textui import colored
 
 from src.cms_actions import CmsActions
 from src.cms_driver import CmsDriver
@@ -17,8 +18,8 @@ def main(actions="abc", browser="firefox", *, binary_location=None):
 
     :param actions: Actions to perform. Refer below for the acceptable values eg: ac
 
-        a : Unenrol from all courses\n
-        b : Enrol into registered courses on cms\n
+        a : [DISABLED] Unenrol from all courses\n
+        b : [DISABLED] Enrol into registered courses on cms\n
         c : Create gcal events\n
         d : Delete created gcal events
 
@@ -30,23 +31,36 @@ def main(actions="abc", browser="firefox", *, binary_location=None):
     driver = initialize_driver_for_preferred_browser(browser, binary_location)
 
     registered_courses = None
-    cms_actions = None
+    # cms_actions = None
     gcal_actions = None
 
     try:
-        cms_driver = CmsDriver(driver)
+        # cms_driver = CmsDriver(driver)
         erp_driver = ErpDriver(driver)
 
         if "a" in actions:
-            cms_actions = CmsActions(cms_driver)
-            cms_actions.unenrol_from_all_courses()
+            # cms_actions = CmsActions(cms_driver)
+            # cms_actions.unenrol_from_all_courses()
+            print(
+                colored.red(
+                    "CMS API is disabled from Jan 2024. Please try again later. If the decision is reversed, this program will be updated."
+                )
+            )
+            exit(1)
 
         if "b" in actions:
-            if not cms_actions:
-                cms_actions = CmsActions(cms_driver)
-
-            registered_courses = erp_driver.get_courses_from_student_center()
-            cms_actions.enrol_into_registered_courses(registered_courses)
+            # if not cms_actions:
+            #     cms_actions = CmsActions(cms_driver)
+            #
+            # registered_courses = erp_driver.get_courses_from_student_center()
+            # cms_actions.enrol_into_registered_courses(registered_courses)
+            print(
+                colored.red(
+                    "CMS API is disabled from Jan 2024. Please try again later."
+                )
+            )
+            print("If the decision is reversed, this program will be updated.")
+            exit(1)
 
         if "c" in actions:
             if not registered_courses:
