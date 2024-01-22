@@ -23,6 +23,7 @@ def main(actions="abc", browser="firefox", *, binary_location=None):
         d : Delete created gcal events
 
     :param binary_location: Path to browser's binary
+
     For more information visit https://github.com/pnicto/erp2gcal
     """
 
