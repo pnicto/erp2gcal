@@ -1,10 +1,10 @@
 import os
 import re
 from typing import List
+import logging
 
 from clint.textui import colored
 from selenium import webdriver
-from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.edge.options import Options as EdgeOptions
@@ -49,13 +49,20 @@ def initialize_driver_for_preferred_browser(browser_arg, binary_location):
         else:
             raise ValueError("Invalid choice")
         return driver
-    except Exception as e:
-        print(colored.red(e))
+    except Exception as err:
+        print(colored.red(err))
+
+        logging.info(type(err))
+        logging.info(err)
+        exit(1)
 
 
 # TODO: It seems redundant to convert the list back to string when it is actually a string in the first place
 def parse_string_to_courses(registered_course_str_list) -> List[Course]:
-    print(registered_course_str_list)
+    logging.info("Attempting to parse the courses from the registered courses string")
+    logging.info("Registered courses string list")
+    logging.info(registered_course_str_list)
+
     parsed_courses = []
     normal_class_pattern = r"[A-Z]{2,4}\s[FG]\d{3}-[LPT]\d+\n[A-Z]{3}\s\(\d{4}\)\n(Mo|Tu|We|Th|Fr|Sa|Su)+\s\b\d{1,2}:\d{2}\s-\s\d{1,2}:\d{2}\b\n\w+\s+\w+"
     split_class_pattern = r"[A-Z]{2,4}\s[FG]\d{3}-[LPT]\d+\n[A-Z]{3}\s\(\d{4}\)\n(Mo|Tu|We|Th|Fr|Sa|Su)+\s\b\d{1,2}:\d{2}\s-\s\d{1,2}:\d{2}\b\n\w+\s+\w+\n(Mo|Tu|We|Th|Fr|Sa|Su)+\s\b\d{1,2}:\d{2}\s-\s\d{1,2}:\d{2}\b\n\w+\s+\w+"
@@ -63,11 +70,16 @@ def parse_string_to_courses(registered_course_str_list) -> List[Course]:
     # just genius
     registered_course_str = "\n".join(registered_course_str_list)
 
+    logging.info("Registered courses string")
+    logging.info(registered_course_str)
+
     normal_courses_iter = re.finditer(normal_class_pattern, registered_course_str)
     split_courses_iter = re.finditer(split_class_pattern, registered_course_str)
 
     for normal_course_match in normal_courses_iter:
         normal_course_str = normal_course_match.group()
+        logging.info("Normal course match")
+        logging.info(normal_course_str)
         normal_course_split = normal_course_str.split("\n")
 
         parsed_course = Course(
@@ -80,6 +92,8 @@ def parse_string_to_courses(registered_course_str_list) -> List[Course]:
 
     for split_course_match in split_courses_iter:
         split_course_str = split_course_match.group()
+        logging.info("Split course match")
+        logging.info(split_course_str)
         split_course_split = split_course_str.split("\n")
 
         parsed_split_course = Course(

@@ -1,11 +1,19 @@
 from clize import run
 from clint.textui import colored
+import logging
 
-from src.cms_actions import CmsActions
-from src.cms_driver import CmsDriver
+# from src.cms_actions import CmsActions
+# from src.cms_driver import CmsDriver
 from src.erp_driver import ErpDriver
 from src.gcal_actions import GoogleCalendarActions
 from src.utils import initialize_driver_for_preferred_browser
+
+logging.basicConfig(
+    filename="debug.log",
+    encoding="utf-8",
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)-8s %(message)s",
+)
 
 
 def main(actions="abc", browser="firefox", *, binary_location=None):
