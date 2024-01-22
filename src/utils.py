@@ -49,18 +49,13 @@ def initialize_driver_for_preferred_browser(browser_arg, binary_location):
         else:
             raise ValueError("Invalid choice")
         return driver
-    except WebDriverException as err:
-        print(colored.red(err.msg))
-    except Exception:
-        print(
-            colored.red(
-                "Please connect to internet to proceed. Need to download the required webdriver."
-            )
-        )
+    except Exception as e:
+        print(colored.red(e))
 
 
 # TODO: It seems redundant to convert the list back to string when it is actually a string in the first place
 def parse_string_to_courses(registered_course_str_list) -> List[Course]:
+    print(registered_course_str_list)
     parsed_courses = []
     normal_class_pattern = r"[A-Z]{2,4}\s[FG]\d{3}-[LPT]\d+\n[A-Z]{3}\s\(\d{4}\)\n(Mo|Tu|We|Th|Fr|Sa|Su)+\s\b\d{1,2}:\d{2}\s-\s\d{1,2}:\d{2}\b\n\w+\s+\w+"
     split_class_pattern = r"[A-Z]{2,4}\s[FG]\d{3}-[LPT]\d+\n[A-Z]{3}\s\(\d{4}\)\n(Mo|Tu|We|Th|Fr|Sa|Su)+\s\b\d{1,2}:\d{2}\s-\s\d{1,2}:\d{2}\b\n\w+\s+\w+\n(Mo|Tu|We|Th|Fr|Sa|Su)+\s\b\d{1,2}:\d{2}\s-\s\d{1,2}:\d{2}\b\n\w+\s+\w+"
