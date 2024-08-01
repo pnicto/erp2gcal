@@ -84,6 +84,16 @@ SCHEDULES = [
         "TuThSa 11:00 - 11:50",
         "Room  TBA",
     ],
+    [
+        "HSS F346-L1",
+        "LEC (3566)",
+        "TuThSa 11:00AM - 11:50AM",
+        "Room  TBA",
+        "HSS F338-L1",
+        "LEC (3233)",
+        "TuThSa 12:00PM - 12:50PM",
+        "Room  TBA",
+    ]
 ]
 
 
@@ -116,6 +126,10 @@ EXPECTED = [
     ],
     [
         Course("HSS F346-L1", "LEC", "TuThSa", "11:00AM"),
+    ],
+    [
+        Course("HSS F346-L1", "LEC", "TuThSa", "11:00AM"),
+        Course("HSS F338-L1", "LEC", "TuThSa", "12:00PM"),
     ],
 ]
 
