@@ -2,7 +2,7 @@
 
 ## Features
 
-- Enroll/unenroll batch from cms.
+- ~~Enroll/unenroll batch from cms.~~ **Disabled currently as CMS is not functioning.**
 - Create google calendar events for the registered courses with ease.
 
 ## Usage
