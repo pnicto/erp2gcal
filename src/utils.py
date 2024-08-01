@@ -104,4 +104,46 @@ def parse_string_to_courses(registered_course_str_list) -> List[Course]:
         )
         parsed_courses.append(parsed_split_course)
 
+    # TODO: This is a temporary fix to handle the time format on ERP. Sometimes it is in 12-hour format and sometimes in 24-hour format.
+    if len(parsed_courses) == 0:
+        normal_class_pattern = r"[A-Z]{2,4}\s[FG]\d{3}-[LPT]\d+\n[A-Z]{3}\s\(\d{4}\)\n(Mo|Tu|We|Th|Fr|Sa|Su)+\s\b\d{1,2}:\d{2}[AP]M\s-\s\d{1,2}:\d{2}[AP]M\b\nRoom\s+TBA"
+        split_class_pattern = r"[A-Z]{2,4}\s[FG]\d{3}-[LPT]\d+\n[A-Z]{3}\s\(\d{4}\)\n(Mo|Tu|We|Th|Fr|Sa|Su)+\s\b\d{1,2}:\d{2}[AP]M\s-\s\d{1,2}:\d{2}[AP]M\b\nRoom\s+TBA\n(Mo|Tu|We|Th|Fr|Sa|Su)+\s\b\d{1,2}:\d{2}[AP]M\s-\s\d{1,2}:\d{2}[AP]M\b\nRoom\s+TBA"
+
+        # just genius
+        registered_course_str = "\n".join(registered_course_str_list)
+
+        logging.info("Registered courses string")
+        logging.info(registered_course_str)
+
+        normal_courses_iter = re.finditer(normal_class_pattern, registered_course_str)
+        split_courses_iter = re.finditer(split_class_pattern, registered_course_str)
+
+        for normal_course_match in normal_courses_iter:
+            normal_course_str = normal_course_match.group()
+            logging.info("Normal course match")
+            logging.info(normal_course_str)
+            normal_course_split = normal_course_str.split("\n")
+
+            parsed_course = Course(
+                normal_course_split[0],
+                normal_course_split[1].split()[0],
+                normal_course_split[2].split()[0],
+                normal_course_split[2].split()[1],
+            )
+            parsed_courses.append(parsed_course)
+
+        for split_course_match in split_courses_iter:
+            split_course_str = split_course_match.group()
+            logging.info("Split course match")
+            logging.info(split_course_str)
+            split_course_split = split_course_str.split("\n")
+
+            parsed_split_course = Course(
+                split_course_split[0],
+                split_course_split[1].split()[0],
+                split_course_split[4].split()[0],
+                split_course_split[4].split()[1],
+            )
+            parsed_courses.append(parsed_split_course)
+
     return parsed_courses
