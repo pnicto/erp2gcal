@@ -16,7 +16,7 @@ logging.basicConfig(
 )
 
 
-def main(actions="abc", browser="firefox", *, binary_location=None):
+def main(actions="c", browser="firefox", *, binary_location=None):
     """
     Erp2gcal is a program to create google calendar events for your registered courses along with some functionality for cms.
 
