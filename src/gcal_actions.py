@@ -53,7 +53,7 @@ class GoogleCalendarActions:
         )
 
         until_date = input()
-        logging.info("Attempting to create calendar events till", until_date)
+        logging.info(f"Attempting to create calendar events till {until_date}")
         until_date = "".join(until_date.split("/")) + "T000000Z"
 
         print(colored.green("\nCreating events"))
@@ -72,12 +72,15 @@ class GoogleCalendarActions:
                     f"RRULE:FREQ=WEEKLY;UNTIL={until_date};BYDAY={','.join(course.days)}"
                 ],
             }
+            logging.info(f"Creating event for {course.name}")
 
             response = (
                 self.service.events()
                 .insert(calendarId="primary", body=event_body)
                 .execute()
             )
+            logging.info(f"Response for {course.name}")
+            logging.info(response)
 
             if response["id"]:
                 print(colored.green(f"Created event for {course.name}"))
